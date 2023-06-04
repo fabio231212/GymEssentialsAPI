@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id          Int                @id @default(autoincrement())
+  cedula      String             @unique
+  nombre      String
+  apellidos   String
+  email       String
+  numCelular  String
+  clave       String
+  roles       Rol[]
+  direcciones DireccionUsuario[]
+  productos   Producto[]
+  encabezadosFactura EncabezadoFactura[]
+}
+
+model Rol {
+  id          Int       @id @default(autoincrement())
+  descripcion String
+  usuarios    Usuario[]
+}
+
+model DireccionUsuario {
+  id        Int       @id @default(autoincrement())
+  provincia String
+  canton    String
+  distrito  String
+  sennas    String
+  codPostal String
+  telefono  String
+  usuarios  Usuario[]
+}
+
+model Producto {
+  id                  Int                   @id @default(autoincrement())
+  nombre              String
+  descripcion         String
+  stock               Int
+  precio              Decimal               @db.Decimal(10, 2)
+  usuarioId           Int
+  usuario             Usuario               @relation(fields: [usuarioId], references: [id])
+  comentarios         comentariosproducto[]
+  imagenes            ImagenProducto[]
+  estadoProductoId    Int
+  estadoProducto      EstadoProducto        @relation(fields: [estadoProductoId], references: [id])
+  categoriaProductoId Int
+  categoriaProducto   CategoriaProducto     @relation(fields: [categoriaProductoId], references: [id])
+  detallesFactura DetalleFactura[]
+}
+
+model comentariosproducto {
+  id          Int      @id @default(autoincrement())
+  descripcion String
+  productoId  Int
+  producto    Producto @relation(fields: [productoId], references: [id])
+}
+
+model ImagenProducto {
+  id         Int      @id @default(autoincrement())
+  URL        String
+  productoId Int
+  producto   Producto @relation(fields: [productoId], references: [id])
+}
+
+model EstadoProducto {
+  id          Int        @id @default(autoincrement())
+  descripcion String
+  productos   Producto[]
+}
+
+model CategoriaProducto {
+  id          Int        @id @default(autoincrement())
+  descripcion String
+  productos   Producto[]
+}
+
+model EncabezadoFactura {
+  id          Int    @id @default(autoincrement())
+  fechaCompra DateTime
+  numTarjeta  String
+  subTotal Decimal @db.Decimal(10,2)
+  total       Decimal @db.Decimal(10,2)
+  estadoPedidoId Int
+  estadoPedido   EstadoPedido @relation(fields: [estadoPedidoId], references: [id])
+  metodoPagoId Int
+  metodoPago   MetodoPago @relation(fields: [metodoPagoId], references: [id])
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  detallesFactura DetalleFactura[]
+}
+
+model EstadoPedido {
+  id          Int        @id @default(autoincrement())
+  descripcion String
+  encabezadoFactura   EncabezadoFactura[]
+}
+
+model MetodoPago {
+  id          Int        @id @default(autoincrement())
+  descripcion String
+  encabezadoFactura   EncabezadoFactura[]
+}
+
+model DetalleFactura{
+    id          Int        @id @default(autoincrement())
+    cantidad Int
+    encabezadosFacturaId Int
+    encabezadosFactura EncabezadoFactura @relation(fields: [encabezadosFacturaId],references: [id])
+     productoId Int
+    producto Producto @relation(fields: [productoId],references: [id])
+}

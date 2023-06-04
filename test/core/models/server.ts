@@ -1,0 +1,46 @@
+
+
+import express, { Application } from 'express';
+import cors from 'cors';
+import { route } from '../interfaces/routes/routers';
+
+class Server {
+
+
+    private router = route();
+    // Definimos las propiedades
+    private app: Application;
+    private port: string;
+  
+
+    constructor() {
+        this.app = express();
+        this.port = process.env.PORT || '8000';
+        this.middlewares();
+        this.routes();
+    }
+
+    routes() {
+        this.app.use(this.router.usuarios.path, this.router.usuarios.router);
+        this.app.use(this.router.roles.path, this.router.roles.router);
+    }
+    // Connect to database
+    
+    middlewares() {
+        // CORS
+        this.app.use(cors());
+        // Lectura del body
+        this.app.use(express.json())
+        // Carpeta Publica
+        this.app.use(express.static('public'))
+    }
+
+    listen() {
+        this.app.listen(this.port, () => {
+            console.log('Servidor corriendo en el puerto ' + this.port);
+
+        })
+    }
+}
+
+export default Server;

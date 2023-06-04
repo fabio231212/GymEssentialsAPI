@@ -1,0 +1,38 @@
+export const producto = [
+  {
+    nombre: "Producto 1",
+    descripcion: "Descripcion 1",
+    precio: 10,
+    stock: 15,
+    usuarioId: 4,
+    estadoProductoId: 1,
+    categoriaProductoId: 1,
+  },
+  {
+    nombre: "Producto 2",
+    descripcion: "Descripcion 2",
+    precio: 100,
+    stock:7,
+    usuarioId: 5,
+    estadoProductoId: 4,
+    categoriaProductoId: 2,
+  },
+  {
+    nombre: "Producto 3",
+    descripcion: "Descripcion 3",
+    precio: 20,
+    stock: 12,
+    usuarioId: 4,
+    estadoProductoId: 3,
+    categoriaProductoId: 3,
+  },
+  {
+    nombre: "Producto 4",
+    descripcion: "Descripcion 4",
+    precio: 250,
+    stock: 1,
+    usuarioId: 5,
+    estadoProductoId: 2,
+    categoriaProductoId: 2,
+  },
+];
