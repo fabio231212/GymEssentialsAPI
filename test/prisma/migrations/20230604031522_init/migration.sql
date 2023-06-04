@@ -52,6 +52,7 @@ CREATE TABLE `comentariosproducto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `descripcion` VARCHAR(191) NOT NULL,
     `productoId` INTEGER NOT NULL,
+    `calificacion` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -115,8 +116,19 @@ CREATE TABLE `MetodoPago` (
 CREATE TABLE `DetalleFactura` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `cantidad` INTEGER NOT NULL,
+    `precioUnitario` DECIMAL(10, 2) NOT NULL,
     `encabezadosFacturaId` INTEGER NOT NULL,
     `productoId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CalificacionUsuario` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `calificacion` INTEGER NOT NULL,
+    `comentario` VARCHAR(191) NOT NULL,
+    `usuarioId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -168,6 +180,9 @@ ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_encabezadosFacturaId
 
 -- AddForeignKey
 ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_productoId_fkey` FOREIGN KEY (`productoId`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CalificacionUsuario` ADD CONSTRAINT `CalificacionUsuario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_RolToUsuario` ADD CONSTRAINT `_RolToUsuario_A_fkey` FOREIGN KEY (`A`) REFERENCES `Rol`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

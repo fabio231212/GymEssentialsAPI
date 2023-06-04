@@ -24,20 +24,24 @@ export const detFactura = [
     encabezadosFacturaId: 1,
     productoId: 1,
     cantidad: 5,
+    precioUnitario: 2000
   },
   {
     encabezadosFacturaId: 1,
     productoId: 2,
     cantidad: 2,
+    precioUnitario: 2000
   },
   {
     encabezadosFacturaId: 2,
     productoId: 3,
     cantidad: 1,
+    precioUnitario: 2000
   },
   {
     encabezadosFacturaId: 2,
     productoId: 4,
     cantidad: 7,
+    precioUnitario: 2000
   },
 ];
