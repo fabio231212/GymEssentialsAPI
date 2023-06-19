@@ -11,18 +11,19 @@ datasource db {
 }
 
 model Usuario {
-  id          Int                @id @default(autoincrement())
-  cedula      String             @unique
-  nombre      String
-  apellidos   String
-  email       String
-  numCelular  String
-  clave       String
-  roles       Rol[]
-  direcciones DireccionUsuario[]
-  productos   Producto[]
-  encabezadosFactura EncabezadoFactura[]
+  id                    Int                   @id @default(autoincrement())
+  cedula                String                @unique
+  nombre                String
+  apellidos             String
+  email                 String
+  numCelular            String
+  clave                 String
+  roles                 Rol[]
+  direcciones           DireccionUsuario[]
+  productos             Producto[]
+  encabezadosFactura    EncabezadoFactura[]
   calificacionesUsuario CalificacionUsuario[]
+  MetodoPago            MetodoPago[]
 }
 
 model Rol {
@@ -32,14 +33,16 @@ model Rol {
 }
 
 model DireccionUsuario {
-  id        Int       @id @default(autoincrement())
-  provincia String
-  canton    String
-  distrito  String
-  sennas    String
-  codPostal String
-  telefono  String
-  usuarios  Usuario[]
+  id                Int                 @id @default(autoincrement())
+  provincia         String
+  canton            String
+  distrito          String
+  sennas            String
+  codPostal         String
+  telefono          String
+  usuarioId         Int
+  usuario           Usuario             @relation(fields: [usuarioId], references: [id])
+  EncabezadoFactura EncabezadoFactura[]
 }
 
 model Producto {
@@ -56,14 +59,14 @@ model Producto {
   estadoProducto      EstadoProducto        @relation(fields: [estadoProductoId], references: [id])
   categoriaProductoId Int
   categoriaProducto   CategoriaProducto     @relation(fields: [categoriaProductoId], references: [id])
-  detallesFactura DetalleFactura[]
+  detallesFactura     DetalleFactura[]
 }
 
 model comentariosproducto {
-  id          Int      @id @default(autoincrement())
-  descripcion String
-  productoId  Int
-  producto    Producto @relation(fields: [productoId], references: [id])
+  id           Int      @id @default(autoincrement())
+  descripcion  String
+  productoId   Int
+  producto     Producto @relation(fields: [productoId], references: [id])
   calificacion Int
 }
 
@@ -87,46 +90,48 @@ model CategoriaProducto {
 }
 
 model EncabezadoFactura {
-  id          Int    @id @default(autoincrement())
-  fechaCompra DateTime
-  numTarjeta  String
-  subTotal Decimal @db.Decimal(10,2)
-  total       Decimal @db.Decimal(10,2)
-  estadoPedidoId Int
-  estadoPedido   EstadoPedido @relation(fields: [estadoPedidoId], references: [id])
-  metodoPagoId Int
-  metodoPago   MetodoPago @relation(fields: [metodoPagoId], references: [id])
-  usuarioId Int
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  id              Int              @id @default(autoincrement())
+  fechaCompra     DateTime
+  numTarjeta      String
+  subTotal        Decimal          @db.Decimal(10, 2)
+  total           Decimal          @db.Decimal(10, 2)
+  estadoPedidoId  Int
+  estadoPedido    EstadoPedido     @relation(fields: [estadoPedidoId], references: [id])
+  metodoPagoId    Int
+  usuarioId       Int
+  usuario         Usuario          @relation(fields: [usuarioId], references: [id])
   detallesFactura DetalleFactura[]
+  IdDireccion     Int
+  direccion       DireccionUsuario @relation(fields: [IdDireccion], references: [id])
 }
 
 model EstadoPedido {
-  id          Int        @id @default(autoincrement())
-  descripcion String
-  encabezadoFactura   EncabezadoFactura[]
+  id                Int                 @id @default(autoincrement())
+  descripcion       String
+  encabezadoFactura EncabezadoFactura[]
 }
 
 model MetodoPago {
-  id          Int        @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   descripcion String
-  encabezadoFactura   EncabezadoFactura[]
+  idUsuario   Int
+  usuario     Usuario @relation(fields: [idUsuario], references: [id])
 }
 
-model DetalleFactura{
-    id          Int        @id @default(autoincrement())
-    cantidad Int
-    precioUnitario Decimal @db.Decimal(10,2)
-    encabezadosFacturaId Int
-    encabezadosFactura EncabezadoFactura @relation(fields: [encabezadosFacturaId],references: [id])
-     productoId Int
-    producto Producto @relation(fields: [productoId],references: [id])
+model DetalleFactura {
+  id                   Int               @id @default(autoincrement())
+  cantidad             Int
+  precioUnitario       Decimal           @db.Decimal(10, 2)
+  encabezadosFacturaId Int
+  encabezadosFactura   EncabezadoFactura @relation(fields: [encabezadosFacturaId], references: [id])
+  productoId           Int
+  producto             Producto          @relation(fields: [productoId], references: [id])
 }
 
 model CalificacionUsuario {
-  id          Int        @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   calificacion Int
   comentario   String
   usuarioId    Int
-  usuario      Usuario    @relation(fields: [usuarioId], references: [id])
+  usuario      Usuario @relation(fields: [usuarioId], references: [id])
 }

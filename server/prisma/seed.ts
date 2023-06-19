@@ -19,9 +19,6 @@ async function main() {
   await prisma.rol.createMany({
     data: rol,
   });
-  await prisma.direccionUsuario.createMany({
-    data: direccionUsuario,
-  });
   await prisma.usuario.create({
     data: usuario[0],
   })
@@ -37,6 +34,9 @@ async function main() {
   await prisma.usuario.create({
     data: usuario[4],
   })
+  await prisma.direccionUsuario.createMany({
+    data: direccionUsuario,
+  });
   await prisma.calificacionUsuario.createMany({
     data: calificacionUsuario,
   })

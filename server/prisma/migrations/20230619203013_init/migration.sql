@@ -29,6 +29,7 @@ CREATE TABLE `DireccionUsuario` (
     `sennas` VARCHAR(191) NOT NULL,
     `codPostal` VARCHAR(191) NOT NULL,
     `telefono` VARCHAR(191) NOT NULL,
+    `usuarioId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -92,6 +93,7 @@ CREATE TABLE `EncabezadoFactura` (
     `estadoPedidoId` INTEGER NOT NULL,
     `metodoPagoId` INTEGER NOT NULL,
     `usuarioId` INTEGER NOT NULL,
+    `IdDireccion` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -108,6 +110,7 @@ CREATE TABLE `EstadoPedido` (
 CREATE TABLE `MetodoPago` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `descripcion` VARCHAR(191) NOT NULL,
+    `idUsuario` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -142,14 +145,8 @@ CREATE TABLE `_RolToUsuario` (
     INDEX `_RolToUsuario_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE `_DireccionUsuarioToUsuario` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
-
-    UNIQUE INDEX `_DireccionUsuarioToUsuario_AB_unique`(`A`, `B`),
-    INDEX `_DireccionUsuarioToUsuario_B_index`(`B`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- AddForeignKey
+ALTER TABLE `DireccionUsuario` ADD CONSTRAINT `DireccionUsuario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Producto` ADD CONSTRAINT `Producto_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -170,10 +167,13 @@ ALTER TABLE `ImagenProducto` ADD CONSTRAINT `ImagenProducto_productoId_fkey` FOR
 ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_estadoPedidoId_fkey` FOREIGN KEY (`estadoPedidoId`) REFERENCES `EstadoPedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_metodoPagoId_fkey` FOREIGN KEY (`metodoPagoId`) REFERENCES `MetodoPago`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_IdDireccion_fkey` FOREIGN KEY (`IdDireccion`) REFERENCES `DireccionUsuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MetodoPago` ADD CONSTRAINT `MetodoPago_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_encabezadosFacturaId_fkey` FOREIGN KEY (`encabezadosFacturaId`) REFERENCES `EncabezadoFactura`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -189,9 +189,3 @@ ALTER TABLE `_RolToUsuario` ADD CONSTRAINT `_RolToUsuario_A_fkey` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `_RolToUsuario` ADD CONSTRAINT `_RolToUsuario_B_fkey` FOREIGN KEY (`B`) REFERENCES `Usuario`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_DireccionUsuarioToUsuario` ADD CONSTRAINT `_DireccionUsuarioToUsuario_A_fkey` FOREIGN KEY (`A`) REFERENCES `DireccionUsuario`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_DireccionUsuarioToUsuario` ADD CONSTRAINT `_DireccionUsuarioToUsuario_B_fkey` FOREIGN KEY (`B`) REFERENCES `Usuario`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

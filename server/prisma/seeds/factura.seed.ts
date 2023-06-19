@@ -7,6 +7,7 @@ export const encFactura = [
     estadoPedidoId: 1,
     metodoPagoId: 1,
     usuarioId: 3,
+    IdDireccion: 1
   },
   {
     fechaCompra: new Date("2023/10/25"),
@@ -16,6 +17,7 @@ export const encFactura = [
     estadoPedidoId: 3,
     metodoPagoId: 1,
     usuarioId: 5,
+    IdDireccion: 4
   },
 ];
 

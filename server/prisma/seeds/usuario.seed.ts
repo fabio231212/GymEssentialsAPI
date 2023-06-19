@@ -30,9 +30,6 @@ export const usuario = [
         clave : '123456',
         roles : {
             connect : {id : 2}
-        },
-        direcciones : {
-            connect : {id : 1}
         }
     },
    
@@ -45,9 +42,6 @@ export const usuario = [
         clave : '123456',
         roles : {
             connect : {id : 3}
-        },
-        direcciones : {
-            connect : [{id : 2}, {id : 3}]
         }
     },
     {
@@ -59,9 +53,6 @@ export const usuario = [
         clave : '123456',
         roles : {
             connect : [{id : 2}, {id : 3}]
-        },
-        direcciones : {
-            connect : [{id : 4}]
         }
     },
 ]

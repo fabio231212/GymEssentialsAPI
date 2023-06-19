@@ -6,6 +6,7 @@ export const direccionUsuario = [
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
     telefono: '0987654321',
+    usuarioId: 3
 },
 {
     provincia: 'Heredia',
@@ -14,6 +15,7 @@ export const direccionUsuario = [
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
     telefono: '0987654321',
+    usuarioId: 4
 },
 {
     provincia: 'San José',
@@ -22,6 +24,7 @@ export const direccionUsuario = [
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
     telefono: '0987654321',
+    usuarioId: 3
 },
 {
     provincia: 'Guanacaste',
@@ -30,5 +33,6 @@ export const direccionUsuario = [
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
     telefono: '0987654321',
+    usuarioId: 5
 }
 ]
