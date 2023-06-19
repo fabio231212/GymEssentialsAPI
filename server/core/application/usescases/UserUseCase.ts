@@ -1,11 +1,11 @@
 // src/application/usecases/CreateUserUseCase.ts
 
 import { Usuario } from '@prisma/client'; // Importa el modelo generado por Prisma
-import { UserRepository } from '../../domain/repositories/UserRepository';
+import { IUserRepository } from '../../infrastructure/Interfaces/IUserRepository';
 import { PrismaUserRepository } from '../../infrastructure/PrismaUserRepository';
 
 export class UserUseCase {
-  private userRepository: UserRepository
+  private userRepository: IUserRepository
   constructor() {
     this.userRepository = new PrismaUserRepository();
   }

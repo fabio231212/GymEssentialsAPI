@@ -2,6 +2,6 @@
 
 import { Rol } from '@prisma/client';
 
-export interface RolRepository {
+export interface IRolRepository {
   crearRol(rol: Rol): Promise<Rol>;
 }

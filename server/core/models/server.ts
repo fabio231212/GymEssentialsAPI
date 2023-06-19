@@ -2,7 +2,7 @@
 
 import express, { Application } from 'express';
 import cors from 'cors';
-import { route } from '../interfaces/routes/routers';
+import { route } from '../presentation/routes/routers';
 
 class Server {
 
@@ -23,6 +23,8 @@ class Server {
     routes() {
         this.app.use(this.router.usuarios.path, this.router.usuarios.router);
         this.app.use(this.router.roles.path, this.router.roles.router);
+        this.app.use(this.router.productos.path, this.router.productos.router);
+        this.app.use(this.router.facturas.path, this.router.facturas.router);
     }
     // Connect to database
     

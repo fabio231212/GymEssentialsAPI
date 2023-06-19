@@ -1,10 +1,10 @@
 // src/infrastructure/database/PrismaUserRepository.ts
 
 import { PrismaClient, Rol } from '@prisma/client'; // Importa el modelo generado por Prisma
-import { RolRepository } from '../domain/repositories/RolRepository';
+import { IRolRepository } from './Interfaces/IRolRepository';
 
 
-export class PrismaRolRepository implements RolRepository {
+export class PrismaRolRepository implements IRolRepository {
   private prisma: PrismaClient;
 
   constructor() {

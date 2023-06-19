@@ -1,12 +1,12 @@
 // src/application/usecases/CreateUserUseCase.ts
 
 import { Rol } from '@prisma/client'; // Importa el modelo generado por Prisma
-import { RolRepository } from '../../domain/repositories/RolRepository';
+import { IRolRepository } from '../../infrastructure/Interfaces/IRolRepository';
 import { PrismaRolRepository } from '../../infrastructure/PrismaRolRepository';
 
 
 export class RolUseCase {
-  private rolRepository: RolRepository
+  private rolRepository: IRolRepository
   constructor() {
     this.rolRepository = new PrismaRolRepository();
   }

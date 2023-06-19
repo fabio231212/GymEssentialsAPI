@@ -1,10 +1,10 @@
 // src/infrastructure/database/PrismaUserRepository.ts
 
 import { PrismaClient, Rol, Usuario } from '@prisma/client'; // Importa el modelo generado por Prisma
-import { UserRepository } from '../domain/repositories/UserRepository';
+import { IUserRepository } from './Interfaces/IUserRepository';
 
 
-export class PrismaUserRepository implements UserRepository {
+export class PrismaUserRepository implements IUserRepository {
   private prisma: PrismaClient;
 
   constructor() {
@@ -12,11 +12,6 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async createUser(user: Usuario): Promise<Usuario> {
-    const rol: Rol = {
-      id: 1,
-      descripcion : "Admin"
-    }
-    this.prisma.$connect();
     
     return this.prisma.usuario.create({ data: user });
   }

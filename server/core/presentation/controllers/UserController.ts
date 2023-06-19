@@ -37,9 +37,4 @@ export class UserController {
     });
   }
 
-  getUsuarioss(req: Request, resp: Response) {
-    resp.json({
-      msg: 'getUsuarios'
-    });
-  }
 }
