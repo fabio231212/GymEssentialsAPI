@@ -7,8 +7,8 @@ const productoRoute = Router();
 const productoController = new ProductoController();
 
 productoRoute.get('/', productoController.getProductos);
-productoRoute.get('/:idVendedor', productoController.getProductosByIdVendedor);
-//productoRoute.get('/:id', productoController.getProductoById);
+productoRoute.get('/:id', productoController.getProductoById);
+productoRoute.get('/idVendedor/:idVendedor', productoController.getProductosByIdVendedor);
 // router.post('/', postUsuario);
 // router.put('/:id', putUsuario);
 // router.delete('/:id', deleteUsuario);

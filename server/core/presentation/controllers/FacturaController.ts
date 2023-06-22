@@ -14,18 +14,14 @@ export class FacturaController {
   };
 
   getFacturasByVendedor = async (req: Request, res: Response) => {
-    let idVendedor = parseInt(req.params.id);
-    const facturas = await this.facturaUseCase.getFacturasByIdVendedor(
-      idVendedor
-    );
+    let idVendedor = parseInt(req.params.idVendedor);
+    const facturas = await this.facturaUseCase.getFacturasByIdVendedor(idVendedor);
     res.json(facturas);
   };
 
-  getFacturas = async (req: Request, res: Response) => {
-    //const facturas = await this.facturaUseCase.getFacturasByUsuario(3);
-    const ejm = {
-      msg: 'hola',
-    };
-    res.json(ejm);
+  getFacturasById = async (req: Request, res: Response) => {
+    let id = parseInt(req.params.id);
+    const facturas = await this.facturaUseCase.getFacturasById(id);
+    res.json(facturas);
   };
 }

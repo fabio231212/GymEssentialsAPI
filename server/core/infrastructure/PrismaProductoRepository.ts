@@ -10,6 +10,8 @@ export class PrismaProductoRepository implements IProductoRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+
+  //Obtiene los productos de un vendedor
   getProductoByIdVendedor(id: number): Promise<Producto[]> {
     try {
       return this.prisma.producto.findMany({where: {usuarioId: id}});
@@ -18,9 +20,12 @@ export class PrismaProductoRepository implements IProductoRepository {
       throw new Error('Error al obtener los productos del vendedor');
     }
   }
+
     crearProducto(producto: Producto): Promise<Producto> {
         throw new Error('Method not implemented.');
     }
+
+  //Obtiene todos los productos
     getProductos(): Promise<Producto[]> {
       try {
         return this.prisma.producto.findMany({
@@ -37,9 +42,26 @@ export class PrismaProductoRepository implements IProductoRepository {
         throw new Error('Error al obtener los productos');
       }
     }
+    //Obtiene un producto por su id
     getProductoById(id: number): Promise<Producto> {
-        throw new Error('Method not implemented.');
+        try {         
+          return this.prisma.producto.findUnique({where: {id: id}}) as Promise<Producto>;
+        } catch (error) {
+          console.error(error);
+          throw new Error('Error al obtener los datos del producto');
+        }
     }
 
+      //Obtiene los productos de un vendedor
+  getProductoByIdVendr(id: number): Promise<Producto[]> {
+    try {
+      return this.prisma.producto.findMany({where: {usuarioId: id}});
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error al obtener los productos del vendedor');
+    }
+  }
+
+  
 
 }

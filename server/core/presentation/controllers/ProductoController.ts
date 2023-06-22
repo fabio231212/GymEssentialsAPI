@@ -18,5 +18,10 @@ export class ProductoController {
     const productos = await this.productoUseCase.getProductoByIdVendedor(idVendedor);
     res.json(productos);
   }
+  getProductoById = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const producto = await this.productoUseCase.getProductoById(id);
+    res.json(producto);
+  }
 
 }
