@@ -49,16 +49,6 @@ CREATE TABLE `Producto` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `comentariosproducto` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `descripcion` VARCHAR(191) NOT NULL,
-    `productoId` INTEGER NOT NULL,
-    `calificacion` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `ImagenProducto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `URL` VARCHAR(191) NOT NULL,
@@ -90,7 +80,6 @@ CREATE TABLE `EncabezadoFactura` (
     `numTarjeta` VARCHAR(191) NOT NULL,
     `subTotal` DECIMAL(10, 2) NOT NULL,
     `total` DECIMAL(10, 2) NOT NULL,
-    `estadoPedidoId` INTEGER NOT NULL,
     `metodoPagoId` INTEGER NOT NULL,
     `usuarioId` INTEGER NOT NULL,
     `IdDireccion` INTEGER NOT NULL,
@@ -122,6 +111,7 @@ CREATE TABLE `DetalleFactura` (
     `precioUnitario` DECIMAL(10, 2) NOT NULL,
     `encabezadosFacturaId` INTEGER NOT NULL,
     `productoId` INTEGER NOT NULL,
+    `estadoPedidoId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -132,6 +122,7 @@ CREATE TABLE `CalificacionUsuario` (
     `calificacion` INTEGER NOT NULL,
     `comentario` VARCHAR(191) NOT NULL,
     `usuarioId` INTEGER NOT NULL,
+    `isVendedor` BOOLEAN NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -158,13 +149,10 @@ ALTER TABLE `Producto` ADD CONSTRAINT `Producto_estadoProductoId_fkey` FOREIGN K
 ALTER TABLE `Producto` ADD CONSTRAINT `Producto_categoriaProductoId_fkey` FOREIGN KEY (`categoriaProductoId`) REFERENCES `CategoriaProducto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `comentariosproducto` ADD CONSTRAINT `comentariosproducto_productoId_fkey` FOREIGN KEY (`productoId`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `ImagenProducto` ADD CONSTRAINT `ImagenProducto_productoId_fkey` FOREIGN KEY (`productoId`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_estadoPedidoId_fkey` FOREIGN KEY (`estadoPedidoId`) REFERENCES `EstadoPedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_metodoPagoId_fkey` FOREIGN KEY (`metodoPagoId`) REFERENCES `MetodoPago`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -180,6 +168,9 @@ ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_encabezadosFacturaId
 
 -- AddForeignKey
 ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_productoId_fkey` FOREIGN KEY (`productoId`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_estadoPedidoId_fkey` FOREIGN KEY (`estadoPedidoId`) REFERENCES `EstadoPedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `CalificacionUsuario` ADD CONSTRAINT `CalificacionUsuario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

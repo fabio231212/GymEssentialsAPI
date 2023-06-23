@@ -55,9 +55,6 @@ async function main() {
   await prisma.producto.createMany({
     data: producto,
   });
-  await prisma.comentariosproducto.createMany({
-    data: comentariosProducto,
-  });
   await prisma.imagenProducto.createMany({
     data: imagenProducto,
   });

@@ -53,7 +53,6 @@ model Producto {
   precio              Decimal               @db.Decimal(10, 2)
   usuarioId           Int
   usuario             Usuario               @relation(fields: [usuarioId], references: [id])
-  comentarios         comentariosproducto[]
   imagenes            ImagenProducto[]
   estadoProductoId    Int
   estadoProducto      EstadoProducto        @relation(fields: [estadoProductoId], references: [id])
@@ -62,13 +61,6 @@ model Producto {
   detallesFactura     DetalleFactura[]
 }
 
-model comentariosproducto {
-  id           Int      @id @default(autoincrement())
-  descripcion  String
-  productoId   Int
-  producto     Producto @relation(fields: [productoId], references: [id])
-  calificacion Int
-}
 
 model ImagenProducto {
   id         Int      @id @default(autoincrement())
@@ -95,8 +87,6 @@ model EncabezadoFactura {
   numTarjeta      String
   subTotal        Decimal          @db.Decimal(10, 2)
   total           Decimal          @db.Decimal(10, 2)
-  estadoPedidoId  Int
-  estadoPedido    EstadoPedido     @relation(fields: [estadoPedidoId], references: [id])
   metodoPagoId    Int
   metodoPago      MetodoPago       @relation(fields: [metodoPagoId], references: [id])
   usuarioId       Int
@@ -109,7 +99,7 @@ model EncabezadoFactura {
 model EstadoPedido {
   id                Int                 @id @default(autoincrement())
   descripcion       String
-  encabezadoFactura EncabezadoFactura[]
+  detallesFactura   DetalleFactura[]
 }
 
 model MetodoPago {
@@ -128,6 +118,8 @@ model DetalleFactura {
   encabezadosFactura   EncabezadoFactura @relation(fields: [encabezadosFacturaId], references: [id])
   productoId           Int
   producto             Producto          @relation(fields: [productoId], references: [id])
+  estadoPedidoId  Int
+  estadoPedido    EstadoPedido     @relation(fields: [estadoPedidoId], references: [id])
 }
 
 model CalificacionUsuario {
@@ -136,4 +128,5 @@ model CalificacionUsuario {
   comentario   String
   usuarioId    Int
   usuario      Usuario @relation(fields: [usuarioId], references: [id])
+  isVendedor   Boolean
 }
