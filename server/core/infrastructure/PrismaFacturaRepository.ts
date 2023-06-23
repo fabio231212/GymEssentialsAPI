@@ -7,43 +7,34 @@ export class PrismaFacturaRepository implements IFacturaRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
-  getFacturasByVendedor(idVendedor: number): Promise<EncabezadoFactura[]> {
+  getProductosByVendedor(idVendedor: number): Promise<Producto[]> {
     try {
-      return this.prisma.encabezadoFactura.findMany({
+      return this.prisma.producto.findMany({
         where: {
           detallesFactura: {
             some: {
-              producto: {
-                usuarioId: idVendedor,
-              },
+              producto: { usuarioId: idVendedor },
             },
           },
-        },
-        include: {
-          usuario: true,
-          detallesFactura: {
-            include: {
-              producto: true,
-            },
-          },
-          metodoPago: true,
+          usuarioId: idVendedor,
         },
       });
     } catch (error) {
       console.error(error);
-      throw new Error('Error al obtener los pedidos del cliente');
+      throw new Error('Error al obtener los productos del vendedor');
     }
-
   }
 
-  getFacturasByUsuario = async (idUsuario: number): Promise<EncabezadoFactura[]> => {
+  getFacturasByUsuario = async (
+    idUsuario: number
+  ): Promise<EncabezadoFactura[]> => {
     try {
       return this.prisma.encabezadoFactura.findMany({
-        where: {usuarioId: idUsuario,},
+        where: { usuarioId: idUsuario },
         include: {
           usuario: true,
           detallesFactura: { include: { producto: true } },
-          metodoPago: true
+          metodoPago: true,
           //   direccion: true,
         },
       });
@@ -61,7 +52,7 @@ export class PrismaFacturaRepository implements IFacturaRepository {
           usuario: true,
           detallesFactura: { include: { producto: true } },
           metodoPago: true,
-          direccion: true,
+          //  direccion: true,
         },
       }) as Promise<EncabezadoFactura>;
     } catch (error) {

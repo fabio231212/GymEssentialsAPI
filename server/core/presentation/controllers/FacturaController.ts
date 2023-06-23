@@ -13,9 +13,11 @@ export class FacturaController {
     res.json(facturas);
   };
 
-  getFacturasByVendedor = async (req: Request, res: Response) => {
+  getProductosByVendedor = async (req: Request, res: Response) => {
     let idVendedor = parseInt(req.params.idVendedor);
-    const facturas = await this.facturaUseCase.getFacturasByIdVendedor(idVendedor);
+    const facturas = await this.facturaUseCase.getProductosByIdVendedor(
+      idVendedor
+    );
     res.json(facturas);
   };
 

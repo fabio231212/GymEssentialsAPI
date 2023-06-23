@@ -1,24 +1,27 @@
-import { EncabezadoFactura, Producto } from "@prisma/client";
+import { EncabezadoFactura, Producto } from '@prisma/client';
 
-import { IFacturaRepository } from "../../infrastructure/Interfaces/IFacturaRepository";
-import { PrismaFacturaRepository } from "../../infrastructure/PrismaFacturaRepository";
+import { IFacturaRepository } from '../../infrastructure/Interfaces/IFacturaRepository';
+import { PrismaFacturaRepository } from '../../infrastructure/PrismaFacturaRepository';
 
-export class FacturaUseCase{
-    private facturaRepository: IFacturaRepository;
+export class FacturaUseCase {
+  private facturaRepository: IFacturaRepository;
 
-    constructor(){
-        this.facturaRepository = new PrismaFacturaRepository();
-    }
+  constructor() {
+    this.facturaRepository = new PrismaFacturaRepository();
+  }
 
-    getFacturasByUsuario= async (idUsuario:number): Promise<EncabezadoFactura[]> => {
-        return this.facturaRepository.getFacturasByUsuario(idUsuario);
-    }
-    getFacturasByIdVendedor= async (idVendedor:number): Promise<EncabezadoFactura[]> => {
-        return this.facturaRepository.getFacturasByVendedor(idVendedor);
-    }
+  getFacturasByUsuario = async (
+    idUsuario: number
+  ): Promise<EncabezadoFactura[]> => {
+    return this.facturaRepository.getFacturasByUsuario(idUsuario);
+  };
+  getProductosByIdVendedor = async (
+    idVendedor: number
+  ): Promise<Producto[]> => {
+    return this.facturaRepository.getProductosByVendedor(idVendedor);
+  };
 
-    getFacturasById= async (id:number): Promise<EncabezadoFactura> => {
-        return this.facturaRepository.getFacturasById(id);
-    }
-
+  getFacturasById = async (id: number): Promise<EncabezadoFactura> => {
+    return this.facturaRepository.getFacturasById(id);
+  };
 }
