@@ -33,7 +33,6 @@ export class PrismaProductoRepository implements IProductoRepository {
           usuario: { select: { nombre: true, email: true } },
           imagenes: true,
           estadoProducto: { select: { descripcion: true } },
-          comentarios: true,
         },
       });
     } catch (error) {
@@ -47,6 +46,10 @@ export class PrismaProductoRepository implements IProductoRepository {
     try {
       return this.prisma.producto.findUnique({
         where: { id: id },
+        include: {
+          categoriaProducto: true,
+          imagenes: true,
+        }
       }) as Promise<Producto>;
     } catch (error) {
       console.error(error);
