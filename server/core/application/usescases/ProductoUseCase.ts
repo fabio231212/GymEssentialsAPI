@@ -18,4 +18,7 @@ export class ProductoUseCase{
     getProductoById= async (id: number): Promise<Producto> => {
         return this.productoRepository.getProductoById(id);
     }
+    getProductsByCategory= async (id: number): Promise<Producto[]> => {
+        return this.productoRepository.getProductsByCategory(id);
+    }
 }

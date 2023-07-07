@@ -56,4 +56,21 @@ export class PrismaProductoRepository implements IProductoRepository {
       throw new Error('Error al obtener los datos del producto');
     }
   }
+
+  //Obtener por productso por categoria
+  getProductsByCategory(id: number): Promise<Producto[]> {
+    try {
+      return this.prisma.producto.findMany({
+        where: { categoriaProductoId: id },
+        include: {
+          categoriaProducto: true,
+          imagenes: true,
+          estadoProducto: { select: { descripcion: true } },
+        },
+      }) as Promise<Producto[]>;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error al obtener los productos');
+    }
+  }
 }

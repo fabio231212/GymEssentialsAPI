@@ -1,4 +1,4 @@
-import { EncabezadoFactura, PrismaClient, Producto } from "@prisma/client";
+import { DetalleFactura, EncabezadoFactura, PrismaClient, Producto } from "@prisma/client";
 import { IFacturaRepository } from "./Interfaces/IFacturaRepository";
 import { usuario } from "../../prisma/seeds/usuario.seed";
 
@@ -7,29 +7,40 @@ export class PrismaFacturaRepository implements IFacturaRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
-  getProductosByVendedor(idVendedor: number): Promise<EncabezadoFactura[]> {
+  getProductosByVendedor(idVendedor: number): Promise<DetalleFactura[]> {
     try {
-      return this.prisma.encabezadoFactura.findMany({
+      // return this.prisma.encabezadoFactura.findMany({
+      //   where: {
+      //     detallesFactura: {
+      //       some: {
+      //         producto: {
+      //           usuarioId: idVendedor,
+      //         },
+      //       },
+      //     },
+      //   },
+      //   include: {
+      //     detallesFactura: {
+      //       where: {
+      //         producto: {
+      //           usuarioId: idVendedor,
+      //         },
+      //       },
+      //       include: {
+      //         producto: true,
+      //       },
+      //     },
+      //   },
+
+      return this.prisma.detalleFactura.findMany({
         where: {
-          detallesFactura: {
-            some: {
-              producto: {
-                usuarioId: idVendedor,
-              },
-            },
+          producto: {
+            usuarioId: idVendedor,
           },
         },
         include: {
-          detallesFactura: {
-            where: {
-              producto: {
-                usuarioId: idVendedor,
-              },
-            },
-            include: {
-              producto: true,
-            },
-          },
+          producto: true,
+          encabezadosFactura: true,
         },
       });
   

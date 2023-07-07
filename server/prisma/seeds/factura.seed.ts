@@ -48,4 +48,11 @@ export const detFactura = [
     precioUnitario: 2000,
     estadoPedidoId: 3,
   },
+  {
+    encabezadosFacturaId: 2,
+    productoId: 2,
+    cantidad: 7,
+    precioUnitario: 2000,
+    estadoPedidoId: 3,
+  },
 ];

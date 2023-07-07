@@ -1,4 +1,4 @@
-import { EncabezadoFactura, Producto } from '@prisma/client';
+import { DetalleFactura, EncabezadoFactura, Producto } from '@prisma/client';
 
 import { IFacturaRepository } from '../../infrastructure/Interfaces/IFacturaRepository';
 import { PrismaFacturaRepository } from '../../infrastructure/PrismaFacturaRepository';
@@ -17,7 +17,7 @@ export class FacturaUseCase {
   };
   getProductosByIdVendedor = async (
     idVendedor: number
-  ): Promise<EncabezadoFactura[]> => {
+  ): Promise<DetalleFactura[]> => {
     return this.facturaRepository.getProductosByVendedor(idVendedor);
   };
 
