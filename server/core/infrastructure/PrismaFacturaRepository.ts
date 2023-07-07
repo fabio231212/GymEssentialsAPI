@@ -52,6 +52,7 @@ export class PrismaFacturaRepository implements IFacturaRepository {
           usuario: true,
           detallesFactura: { include: { producto: true } },
           metodoPago: true,
+          direccion: true,
           //  direccion: true,
         },
       }) as Promise<EncabezadoFactura>;

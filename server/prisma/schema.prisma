@@ -46,21 +46,20 @@ model DireccionUsuario {
 }
 
 model Producto {
-  id                  Int                   @id @default(autoincrement())
+  id                  Int               @id @default(autoincrement())
   nombre              String
   descripcion         String
   stock               Int
-  precio              Decimal               @db.Decimal(10, 2)
+  precio              Decimal           @db.Decimal(10, 2)
   usuarioId           Int
-  usuario             Usuario               @relation(fields: [usuarioId], references: [id])
+  usuario             Usuario           @relation(fields: [usuarioId], references: [id])
   imagenes            ImagenProducto[]
   estadoProductoId    Int
-  estadoProducto      EstadoProducto        @relation(fields: [estadoProductoId], references: [id])
+  estadoProducto      EstadoProducto    @relation(fields: [estadoProductoId], references: [id])
   categoriaProductoId Int
-  categoriaProducto   CategoriaProducto     @relation(fields: [categoriaProductoId], references: [id])
+  categoriaProducto   CategoriaProducto @relation(fields: [categoriaProductoId], references: [id])
   detallesFactura     DetalleFactura[]
 }
-
 
 model ImagenProducto {
   id         Int      @id @default(autoincrement())
@@ -97,17 +96,17 @@ model EncabezadoFactura {
 }
 
 model EstadoPedido {
-  id                Int                 @id @default(autoincrement())
-  descripcion       String
-  detallesFactura   DetalleFactura[]
+  id              Int              @id @default(autoincrement())
+  descripcion     String
+  detallesFactura DetalleFactura[]
 }
 
 model MetodoPago {
-  id          Int     @id @default(autoincrement())
-  descripcion String
-  idUsuario   Int
-  usuario     Usuario @relation(fields: [idUsuario], references: [id])
-    EncabezadoFactura EncabezadoFactura[]
+  id                Int                 @id @default(autoincrement())
+  descripcion       String
+  idUsuario         Int
+  usuario           Usuario             @relation(fields: [idUsuario], references: [id])
+  EncabezadoFactura EncabezadoFactura[]
 }
 
 model DetalleFactura {
@@ -118,8 +117,8 @@ model DetalleFactura {
   encabezadosFactura   EncabezadoFactura @relation(fields: [encabezadosFacturaId], references: [id])
   productoId           Int
   producto             Producto          @relation(fields: [productoId], references: [id])
-  estadoPedidoId  Int
-  estadoPedido    EstadoPedido     @relation(fields: [estadoPedidoId], references: [id])
+  estadoPedidoId       Int
+  estadoPedido         EstadoPedido      @relation(fields: [estadoPedidoId], references: [id])
 }
 
 model CalificacionUsuario {
