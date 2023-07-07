@@ -1,27 +1,41 @@
-import { EncabezadoFactura, PrismaClient, Producto } from '@prisma/client';
-import { IFacturaRepository } from './Interfaces/IFacturaRepository';
-import { usuario } from '../../prisma/seeds/usuario.seed';
+import { EncabezadoFactura, PrismaClient, Producto } from "@prisma/client";
+import { IFacturaRepository } from "./Interfaces/IFacturaRepository";
+import { usuario } from "../../prisma/seeds/usuario.seed";
 
 export class PrismaFacturaRepository implements IFacturaRepository {
   private prisma: PrismaClient;
   constructor() {
     this.prisma = new PrismaClient();
   }
-  getProductosByVendedor(idVendedor: number): Promise<Producto[]> {
+  getProductosByVendedor(idVendedor: number): Promise<EncabezadoFactura[]> {
     try {
-      return this.prisma.producto.findMany({
+      return this.prisma.encabezadoFactura.findMany({
         where: {
           detallesFactura: {
             some: {
-              producto: { usuarioId: idVendedor },
+              producto: {
+                usuarioId: idVendedor,
+              },
             },
           },
-          usuarioId: idVendedor,
+        },
+        include: {
+          detallesFactura: {
+            where: {
+              producto: {
+                usuarioId: idVendedor,
+              },
+            },
+            include: {
+              producto: true,
+            },
+          },
         },
       });
+  
     } catch (error) {
       console.error(error);
-      throw new Error('Error al obtener los productos del vendedor');
+      throw new Error("Error al obtener los productos del vendedor");
     }
   }
 
@@ -40,7 +54,7 @@ export class PrismaFacturaRepository implements IFacturaRepository {
       });
     } catch (error) {
       console.error(error);
-      throw new Error('Error al obtener los pedidos del cliente');
+      throw new Error("Error al obtener los pedidos del cliente");
     }
   };
 
@@ -58,7 +72,7 @@ export class PrismaFacturaRepository implements IFacturaRepository {
       }) as Promise<EncabezadoFactura>;
     } catch (error) {
       console.error(error);
-      throw new Error('Error al obtener los pedidos del cliente');
+      throw new Error("Error al obtener los pedidos del cliente");
     }
   }
 }

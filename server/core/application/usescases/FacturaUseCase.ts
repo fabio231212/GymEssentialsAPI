@@ -17,7 +17,7 @@ export class FacturaUseCase {
   };
   getProductosByIdVendedor = async (
     idVendedor: number
-  ): Promise<Producto[]> => {
+  ): Promise<EncabezadoFactura[]> => {
     return this.facturaRepository.getProductosByVendedor(idVendedor);
   };
 
