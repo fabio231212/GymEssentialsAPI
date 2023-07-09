@@ -38,9 +38,11 @@ CREATE TABLE `DireccionUsuario` (
 CREATE TABLE `Producto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(191) NOT NULL,
-    `descripcion` VARCHAR(191) NOT NULL,
+    `descripcion` VARCHAR(500) NOT NULL,
     `stock` INTEGER NOT NULL,
+    `descuento` DECIMAL(10, 2) NOT NULL,
     `precio` DECIMAL(10, 2) NOT NULL,
+    `precioOferta` DECIMAL(10, 2) NOT NULL,
     `usuarioId` INTEGER NOT NULL,
     `estadoProductoId` INTEGER NOT NULL,
     `categoriaProductoId` INTEGER NOT NULL,
@@ -53,6 +55,14 @@ CREATE TABLE `ImagenProducto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `URL` VARCHAR(191) NOT NULL,
     `productoId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `tamanno` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `descripcion` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -136,6 +146,15 @@ CREATE TABLE `_RolToUsuario` (
     INDEX `_RolToUsuario_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `_ProductoTotamanno` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_ProductoTotamanno_AB_unique`(`A`, `B`),
+    INDEX `_ProductoTotamanno_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `DireccionUsuario` ADD CONSTRAINT `DireccionUsuario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -180,3 +199,9 @@ ALTER TABLE `_RolToUsuario` ADD CONSTRAINT `_RolToUsuario_A_fkey` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `_RolToUsuario` ADD CONSTRAINT `_RolToUsuario_B_fkey` FOREIGN KEY (`B`) REFERENCES `Usuario`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ProductoTotamanno` ADD CONSTRAINT `_ProductoTotamanno_A_fkey` FOREIGN KEY (`A`) REFERENCES `Producto`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_ProductoTotamanno` ADD CONSTRAINT `_ProductoTotamanno_B_fkey` FOREIGN KEY (`B`) REFERENCES `tamanno`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

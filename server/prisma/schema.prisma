@@ -48,9 +48,11 @@ model DireccionUsuario {
 model Producto {
   id                  Int               @id @default(autoincrement())
   nombre              String
-  descripcion         String
+  descripcion         String            @db.VarChar(500)
   stock               Int
+  descuento           Decimal           @db.Decimal(10, 2)
   precio              Decimal           @db.Decimal(10, 2)
+  precioOferta        Decimal           @db.Decimal(10, 2)
   usuarioId           Int
   usuario             Usuario           @relation(fields: [usuarioId], references: [id])
   imagenes            ImagenProducto[]
@@ -59,6 +61,7 @@ model Producto {
   categoriaProductoId Int
   categoriaProducto   CategoriaProducto @relation(fields: [categoriaProductoId], references: [id])
   detallesFactura     DetalleFactura[]
+  tamannos            tamanno[]
 }
 
 model ImagenProducto {
@@ -66,6 +69,12 @@ model ImagenProducto {
   URL        String
   productoId Int
   producto   Producto @relation(fields: [productoId], references: [id])
+}
+
+model tamanno {
+  id          Int        @id @default(autoincrement())
+  descripcion String
+  productos   Producto[]
 }
 
 model EstadoProducto {
