@@ -56,8 +56,17 @@ async function main() {
   await prisma.metodoPago.createMany({
     data: metodoPago,
   });
-  await prisma.producto.createMany({
-    data: producto,
+  await prisma.producto.create({
+    data: producto[0],
+  });
+  await prisma.producto.create({
+    data: producto[1],
+  });
+  await prisma.producto.create({
+    data: producto[2],
+  });
+  await prisma.producto.create({
+    data: producto[3],
   });
   await prisma.imagenProducto.createMany({
     data: imagenProducto,
