@@ -62,6 +62,13 @@ model Producto {
   categoriaProducto   CategoriaProducto @relation(fields: [categoriaProductoId], references: [id])
   detallesFactura     DetalleFactura[]
   tamannos            tamanno[]
+  marcas              marca[]
+}
+
+model marca {
+  id          Int        @id @default(autoincrement())
+  descripcion String
+  productos   Producto[]
 }
 
 model ImagenProducto {

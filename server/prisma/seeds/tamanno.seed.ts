@@ -8,4 +8,22 @@ export const tammano = [
   {
     descripcion: 'Pequeño',
   },
+  {
+    descripcion: 'XS',
+  },
+  {
+    descripcion: 'X',
+  },
+  {
+    descripcion: 'M',
+  },
+  {
+    descripcion: 'L',
+  },
+  {
+    descripcion: 'XL',
+  },
+  {
+    descripcion: 'XXL',
+  }
 ];
