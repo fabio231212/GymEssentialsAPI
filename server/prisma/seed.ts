@@ -13,6 +13,7 @@ import { comentariosProducto } from './seeds/comentariosProducto.seed';
 import { categoriaProducto } from './seeds/categoriaProducto.seed';
 import { calificacionUsuario } from './seeds/calificacionUsuario.seed';
 import { tammano } from './seeds/tamanno.seed';
+import { marcas } from './seeds/marca.seed';
 
 const prisma = new PrismaClient();
 
@@ -22,6 +23,9 @@ async function main() {
   });
   await prisma.tamanno.createMany({
     data: tammano,
+  });
+  await prisma.marca.createMany({
+    data: marcas,
   });
   await prisma.usuario.create({
     data: usuario[0],
@@ -67,6 +71,21 @@ async function main() {
   });
   await prisma.producto.create({
     data: producto[3],
+  });
+  await prisma.producto.create({
+    data: producto[4],
+  });
+  await prisma.producto.create({
+    data: producto[5],
+  });
+  await prisma.producto.create({
+    data: producto[6],
+  });
+  await prisma.producto.create({
+    data: producto[7],
+  });
+  await prisma.producto.create({
+    data: producto[8],
   });
   await prisma.imagenProducto.createMany({
     data: imagenProducto,
