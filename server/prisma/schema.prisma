@@ -15,7 +15,7 @@ model Usuario {
   cedula                String                @unique
   nombre                String
   apellidos             String
-  email                 String
+  email                 String                @unique
   numCelular            String
   clave                 String
   roles                 Rol[]
