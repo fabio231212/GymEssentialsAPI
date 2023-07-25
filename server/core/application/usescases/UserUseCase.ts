@@ -5,7 +5,7 @@ import { IUserRepository } from '../../infrastructure/Interfaces/IUserRepository
 import { PrismaUserRepository } from '../../infrastructure/PrismaUserRepository';
 
 export class UserUseCase {
-  private userRepository: IUserRepository
+  private userRepository: IUserRepository;
   constructor() {
     this.userRepository = new PrismaUserRepository();
   }
@@ -13,5 +13,9 @@ export class UserUseCase {
   async CrearUsuario(user: Usuario): Promise<Usuario> {
     // Aquí puedes agregar lógica adicional, como validaciones o encriptación de contraseñas, antes de guardar el usuario
     return this.userRepository.createUser(user);
+  }
+
+  async login(email: string, password: string): Promise<Usuario | null> {
+    return this.userRepository.login(email, password);
   }
 }

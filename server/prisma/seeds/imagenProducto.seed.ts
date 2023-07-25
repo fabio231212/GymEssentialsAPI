@@ -1,3 +1,7 @@
+
+import { producto } from './producto.seed';
+
+
 export const imagenProducto = [
   {
     imgUrl: "https://landerfit.com/wp-content/uploads/2022/12/Creatine.jpg",
@@ -35,5 +39,4 @@ export const imagenProducto = [
     imgUrl: "https://landerfit.b-cdn.net/wp-content/uploads/2022/12/MULTIPHASE.jpg",
     productoId: 9,
   },
-
 ];
