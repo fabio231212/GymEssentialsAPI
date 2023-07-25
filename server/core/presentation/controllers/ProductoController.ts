@@ -1,5 +1,7 @@
+import { parse } from 'path';
 import { ProductoUseCase } from '../../application/usescases/ProductoUseCase';
 import { Request, Response } from 'express';
+
 export class ProductoController {
   public productoUseCase: ProductoUseCase;
 
@@ -34,4 +36,16 @@ export class ProductoController {
       res.json(productos);
     }
   };
+  createProduct = async (req: Request, res: Response) => {
+    //SE HACE UNA CONSTANTE DE PRODUCTO EN LA CUAL SE ENVIA EL BODY Y LAS IMAGENES
+    const producto = { ...req.body, imagenes: req.files };
+    const productoCreado = await this.productoUseCase.createProduct(producto);
+    res.json(productoCreado);
+  };
+
+  editProduct = async (req: Request, res: Response) => {
+    const producto = { ...req.body, imagenes: req.files };
+    const productoEditado = await this.productoUseCase.editProduct(producto);
+    res.json(productoEditado);
+  }
 }
