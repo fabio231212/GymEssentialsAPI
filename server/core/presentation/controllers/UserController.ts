@@ -54,14 +54,19 @@ export class UserController {
         // Generar el token JWT
         const roles = user.roles.map((rol) => rol.descripcion);
         const token = jwt.sign(
-          { userId: user.id, roles: roles },
+          {
+            userId: user.id,
+            nombre: user.nombre,
+             mail: user.email,
+            roles: roles,
+          },
           'me_gustan_malvadas',
           {
             expiresIn: '1h', //token dura 1 hora
           }
         );
 
-        return res.status(200).json({ token: token, usuario: user });
+        return res.status(200).json({ token: token });
       } else {
         return res.status(404).json({ message: 'Usuario no encontrado' });
       }
