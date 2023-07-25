@@ -73,7 +73,7 @@ model marca {
 
 model ImagenProducto {
   id         Int      @id @default(autoincrement())
-  URL        String
+  imgUrl        String
   productoId Int
   producto   Producto @relation(fields: [productoId], references: [id])
 }

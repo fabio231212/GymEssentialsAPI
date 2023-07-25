@@ -18,6 +18,7 @@ class Server {
         this.port = process.env.PORT || '8000';
         this.middlewares();
         this.routes();
+        this.app.use('/public', express.static(__dirname + '../../core/storage/imgs'));
     }
 
     routes() {

@@ -7,4 +7,6 @@ export interface IProductoRepository {
     getProductoById(id: number): Promise<Producto>;
     getProductoByIdVendedor(id: number): Promise<Producto[]>;
     getProductsByCategory(id: number): Promise<Producto[]>;
+    createProduct(producto: any): Promise<Producto>;
+    editProduct(producto: any): Promise<Producto>;
 }

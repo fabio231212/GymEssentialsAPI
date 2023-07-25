@@ -61,7 +61,7 @@ CREATE TABLE `marca` (
 -- CreateTable
 CREATE TABLE `ImagenProducto` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `URL` VARCHAR(191) NOT NULL,
+    `imgUrl` VARCHAR(191) NOT NULL,
     `productoId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
