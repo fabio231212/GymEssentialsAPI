@@ -21,4 +21,10 @@ export class ProductoUseCase{
     getProductsByCategory= async (id: number): Promise<Producto[]> => {
         return this.productoRepository.getProductsByCategory(id);
     }
+    createProduct= async (producto: any): Promise<Producto> => {
+        return this.productoRepository.createProduct(producto);
+    }
+    editProduct= async (producto: any): Promise<Producto> => {
+        return this.productoRepository.editProduct(producto);
+    }
 }

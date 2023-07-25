@@ -5,6 +5,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 import http from 'http';
 
 class Server {
+
   private router = route();
   // Definimos las propiedades
   private app: Application;
@@ -17,6 +18,7 @@ class Server {
     this.port = process.env.PORT || '8000';
     this.middlewares();
     this.routes();
+     this.app.use('/public', express.static(__dirname + '../../core/storage/imgs'));
     this.httpServer = http.createServer(this.app);
     this.io = new SocketIOServer(this.httpServer, {
       cors: {
@@ -48,6 +50,7 @@ class Server {
       console.log('Servidor corriendo en el puerto ' + this.port);
     });
   }
+
 }
 
 export default Server;
