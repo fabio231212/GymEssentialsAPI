@@ -24,24 +24,29 @@ server.io.on('connection', (client: Socket) => {
     callback(personas);
   });
 
-  client.on('mensajeprivado', (usuario) => {
-    //server.io.emit('mensajeprivado',data);
-  });
-
   client.on('disconnect', (data, callback) => {
     console.log('Cliente desconectado');
     let personaBorrada = usuariosChat.borraPersona(client.id);
+    callback(personaBorrada);
   });
 
-  client.on('mensajePrivado', (data) => {
+  client.on('mensajePrivado', (data, callback) => {
+    let recibe = null;
     let persona = usuariosChat.getPersona(client.id);
 
-    let recibe = usuariosChat.getPersonaByIdUser(data.para);
+    if (typeof data.para === 'string') {
+      recibe = usuariosChat.getPersona(data.para);
+    } else {
+      recibe = usuariosChat.getPersonaByIdUser(data.para);
+    }
+
     client.broadcast
       .to(recibe.id)
       .emit(
         'mensajePrivado',
-        crearMensaje(client.id, persona.nombre, data.mensaje)
+        crearMensaje(client.id, persona.idUser, persona.nombre, data.mensaje)
       );
+
+    callback(persona);
   });
 });
