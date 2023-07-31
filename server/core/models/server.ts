@@ -3,6 +3,7 @@ import cors from 'cors';
 import { route } from '../presentation/routes/routers';
 import { Server as SocketIOServer, Socket } from 'socket.io';
 import http from 'http';
+import path, { dirname } from 'path';
 
 class Server {
 
@@ -18,7 +19,6 @@ class Server {
     this.port = process.env.PORT || '8000';
     this.middlewares();
     this.routes();
-     this.app.use('/public', express.static(__dirname + '../../core/storage/imgs'));
     this.httpServer = http.createServer(this.app);
     this.io = new SocketIOServer(this.httpServer, {
       cors: {
@@ -33,7 +33,12 @@ class Server {
     this.app.use(this.router.roles.path, this.router.roles.router);
     this.app.use(this.router.productos.path, this.router.productos.router);
     this.app.use(this.router.facturas.path, this.router.facturas.router);
+    this.app.use(this.router.marcas.path, this.router.marcas.router);
+    this.app.use(this.router.tammanos.path, this.router.tammanos.router);
+    this.app.use(this.router.categorias.path, this.router.categorias.router);
+    this.app.use(this.router.estadoProducto.path, this.router.estadoProducto.router);
   }
+  
   // Connect to database
 
   middlewares() {
@@ -42,7 +47,8 @@ class Server {
     // Lectura del body
     this.app.use(express.json());
     // Carpeta Publica
-    this.app.use(express.static('public'));
+    const serverFolderPath = path.join(__dirname, '../../../');
+    this.app.use('/public', express.static(`${serverFolderPath}/storage/imgs`));
   }
 
   listen() {
