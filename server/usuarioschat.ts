@@ -6,6 +6,13 @@ export class UsuariosChat {
   }
 
   agregarPersona(id: string, idUser: number, nombre: string) {
+    const existingUser = this.personas.find(
+      (persona) => persona.idUser === idUser
+    );
+
+    if (existingUser) {
+      return;
+    }
     let persona = { id, idUser, nombre };
     this.personas.push(persona);
     return this.personas;
