@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UserUseCase } from '../../application/usescases/UserUseCase';
 import { PrismaClient, Usuario, Rol, Prisma } from '@prisma/client'; // Asegúrate de importar PrismaClient y los tipos de Usuario y Rol correctamente
 import jwt from 'jsonwebtoken';
-
+const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
 export class UserController {
   public userCase: UserUseCase;
@@ -39,7 +39,7 @@ export class UserController {
     });
   }
 
-  login = async (req: Request, res: Response): Promise<Response> => {
+  login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
       const user = await prisma.usuario.findUnique({
@@ -50,6 +50,17 @@ export class UserController {
           roles: true,
         },
       });
+
+      if (!user) {
+        return res.status(404).send({ message: 'Usuario no encontrado' });
+      }
+      const checkPassword = await bcrypt.compare(password, user.clave);
+      // if (checkPassword === false) {
+      //   res.status(401).send({
+      //     success: false,
+      //     message: 'Credenciales no validas',
+      //   });
+      // }
       if (user && user.clave === password) {
         // Generar el token JWT
         const roles = user.roles.map((rol) => rol.descripcion);
@@ -57,7 +68,7 @@ export class UserController {
           {
             userId: user.id,
             nombre: user.nombre,
-             mail: user.email,
+            mail: user.email,
             roles: roles,
           },
           'me_gustan_malvadas',
@@ -66,12 +77,12 @@ export class UserController {
           }
         );
 
-        return res.status(200).json({ token: token });
+        res.json({ token: token });
       } else {
-        return res.status(404).json({ message: 'Usuario no encontrado' });
+        res.status(404).send({ message: 'Usuario no encontrado' });
       }
     } catch (error) {
-      return res.status(500).json({ message: error });
+      return res.status(500).send({ message: error });
     }
   };
 }
