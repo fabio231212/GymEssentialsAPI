@@ -2,6 +2,7 @@
 
 import { PrismaClient, Producto } from "@prisma/client"; // Importa el modelo generado por Prisma
 import { IProductoRepository } from "./Interfaces/IProductoRepository";
+import ImageUploader from "../presentation/controllers/storageController";
 
 export class PrismaProductoRepository implements IProductoRepository {
   private prisma: PrismaClient;
@@ -33,6 +34,8 @@ export class PrismaProductoRepository implements IProductoRepository {
           usuario: { select: { nombre: true, email: true } },
           imagenes: true,
           estadoProducto: { select: { descripcion: true } },
+          marcas: true,
+          tamannos: true,
         },
       });
     } catch (error) {
@@ -50,6 +53,8 @@ export class PrismaProductoRepository implements IProductoRepository {
           categoriaProducto: true,
           imagenes: true,
           usuario: true,
+          marcas: true,
+          tamannos: true,
         },
       }) as Promise<Producto>;
     } catch (error) {
@@ -78,13 +83,14 @@ export class PrismaProductoRepository implements IProductoRepository {
   //LA FUNCION ES ASINCRONA PARA PODER MANEJAR LA CREACION DE PRODUCTOS Y LAS IMAGENES
   async createProduct(producto: any): Promise<Producto> {
     try {
-      // PRIMERO SE VERIFICA QUE EL PRODUCTO TENGA AL MENOS UNA IMAGEN Y SI NO TIENE SE LANZA UN ERROR
-      if (producto.imagenes.length == 0) {
-        throw new Error("Debe enviar al menos una imagen");
-      }
 
+      ImageUploader.counter = 1;
+      // PRIMERO SE VERIFICA QUE EL PRODUCTO TENGA AL MENOS UNA IMAGEN Y SI NO TIENE SE LANZA UN ERROR
+      // if (producto.imagenes.length == 0) {
+      //   throw new Error("Debe enviar al menos una imagen");
+      // }
+      console.log(producto);
       //SI TIENE AL MENOS UNA IMAGEN SE CREA EL PRODUCTO
-      console.log(producto.marcas);
       const nuevoProducto = await this.prisma.producto.create({
         data: {
           nombre: producto.nombre,
@@ -94,29 +100,31 @@ export class PrismaProductoRepository implements IProductoRepository {
           precio: parseFloat(producto.precio),
           precioOferta: parseFloat(producto.precioOferta),
           categoriaProductoId: parseInt(producto.categoriaProductoId),
-          usuarioId: parseInt(producto.usuarioId),
+          usuarioId: 4,
           estadoProductoId: parseInt(producto.estadoProductoId),
-          // marcas:{
-          //   connect: Object.values(producto.marcas),
-          // },
-          // tamannos:{
-          //   connect: Object.values(producto.tamannos),
-          // }
+          marcas:{
+            connect: JSON.parse(producto.marcas),
+          },
+          tamannos:{
+            connect: JSON.parse(producto.tamannos),
+          }
         },
       });
 
       //DESDE AQUI SE CREA UNA CONSTANTE DE IMAGENES QUE CONTIENE UN ARREGLO DE IMAGENES CADA UNA CON UN NOMBRE UNICO
-      const imagenes = producto.imagenes.map((imagen: any) => ({
+      const imagenes = producto.imagenes.map((imagen: any, index: number) => ({
         imgUrl:
-          "https://localhost:8000/public/" +
-          producto.nombre +
-          producto.usuarioId +
-          Date.now() +
+          "http://localhost:8000/public/" +
+          producto.nombre.replace(/\s/g, "") +
+          // producto.usuarioId +
+          4 +
+          new Date().toISOString().slice(0, 10).replace(/-/g, "") +
+          (index + 1) + // Use index + 1 to add the number at the end
           ".jpg",
         productoId: nuevoProducto.id, // Asignar el id del producto recién creado
       }));
 
-      //Y AL FINAL SE INSERTAN LAS URL DE LAS IMAGENES EN LA BASE DE DATOS
+      // //Y AL FINAL SE INSERTAN LAS URL DE LAS IMAGENES EN LA BASE DE DATOS
       await this.prisma.imagenProducto.createMany({
         data: imagenes,
       });
@@ -130,6 +138,8 @@ export class PrismaProductoRepository implements IProductoRepository {
 
   async editProduct(producto: any): Promise<Producto> {
     try {
+      ImageUploader.counter = 1;
+
       // Obtiene el producto existente de la base de datos
       const existingProduct = await this.prisma.producto.findUnique({
         where: { id: parseInt(producto.id) },
@@ -159,17 +169,27 @@ export class PrismaProductoRepository implements IProductoRepository {
             precioOferta: producto.precioOferta,
             categoriaProductoId: parseInt(producto.categoriaProductoId),
             estadoProductoId: parseInt(producto.estadoProductoId),
+            usuarioId:4,
+            tamannos: {
+                disconnect: existingProduct.tamannos,
+                connect: JSON.parse(producto.tamannos),
+            },
+            marcas: {
+                disconnect: existingProduct.marcas,
+                connect: JSON.parse(producto.marcas),
+            },
           },
         });
 
+        console.log(producto.imagenes);
         // Si hay imágenes nuevas enviadas, actualiza las imágenes del producto
         if (producto.imagenes && producto.imagenes.length > 0) {
-          const newImages = producto.imagenes.map((image: any) => ({
+          const newImages = producto.imagenes.map((image: any, index: number) => ({
             imgUrl:
-              "https://localhost:8000/public/" +
-              updatedProduct.nombre +
+              "http://localhost:8000/public/" +
+              updatedProduct.nombre.replace(/\s/g, "") +
               updatedProduct.usuarioId +
-              Date.now() +
+              new Date().toISOString().slice(0, 10).replace(/-/g, "")+ (index+1) +
               ".jpg",
             productoId: updatedProduct.id,
           }));
