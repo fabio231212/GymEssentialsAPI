@@ -21,12 +21,13 @@ server.io.on('connection', (client: Socket) => {
       data.nombre
     );
     console.log(data.userId);
-    callback(personas);
+    server.io.emit('listaPersona', usuariosChat.getPersonas());
   });
 
   client.on('disconnect', (data, callback) => {
     console.log('Cliente desconectado');
     let personaBorrada = usuariosChat.borraPersona(client.id);
+    server.io.emit('listaPersona', usuariosChat.getPersonas());
   });
 
   client.on('mensajePrivado', (data, callback) => {
@@ -46,6 +47,6 @@ server.io.on('connection', (client: Socket) => {
         crearMensaje(client.id, persona.idUser, persona.nombre, data.mensaje)
       );
 
-    callback(persona);
+    // callback(persona);
   });
 });
