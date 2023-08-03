@@ -6,10 +6,10 @@ const rolRouter = Router();
 
 const rolController = new RolController();
 
-rolRouter.get('/', rolController.getRol);
+rolRouter.get("/", rolController.getRoles);
 // router.get('/:id', getUsuario);
 // router.post('/', postUsuario);
 // router.put('/:id', putUsuario);
 // router.delete('/:id', deleteUsuario);
-rolRouter.post('/',rolController.CreateRol);
+
 export default rolRouter;

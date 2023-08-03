@@ -27,7 +27,6 @@ server.io.on('connection', (client: Socket) => {
   client.on('disconnect', (data, callback) => {
     console.log('Cliente desconectado');
     let personaBorrada = usuariosChat.borraPersona(client.id);
-    callback(personaBorrada);
   });
 
   client.on('mensajePrivado', (data, callback) => {

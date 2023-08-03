@@ -15,7 +15,7 @@ export class UserUseCase {
     return this.userRepository.createUser(user);
   }
 
-  async login(email: string, password: string): Promise<Usuario | null> {
+  async login(email: string, password: string): Promise<any | null> {
     return this.userRepository.login(email, password);
   }
 }

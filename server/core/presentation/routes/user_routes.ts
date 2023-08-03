@@ -11,6 +11,6 @@ userRoute.get('/', verifyToken, userController.getUser);
 // router.post('/', postUsuario);
 // router.put('/:id', putUsuario);
 // router.delete('/:id', deleteUsuario);
-userRoute.post('/', verifyToken, userController.createUser);
+userRoute.post('/', userController.createUser);
 userRoute.post('/login', userController.login);
 export default userRoute;

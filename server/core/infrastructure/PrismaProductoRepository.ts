@@ -55,7 +55,6 @@ export class PrismaProductoRepository implements IProductoRepository {
           usuario: true,
           marcas: true,
           tamannos: true,
-          comentariosProducto: true,
 
         },
       }) as Promise<Producto>;
@@ -88,10 +87,9 @@ export class PrismaProductoRepository implements IProductoRepository {
 
       ImageUploader.counter = 1;
       // PRIMERO SE VERIFICA QUE EL PRODUCTO TENGA AL MENOS UNA IMAGEN Y SI NO TIENE SE LANZA UN ERROR
-      // if (producto.imagenes.length == 0) {
-      //   throw new Error("Debe enviar al menos una imagen");
-      // }
-      console.log(producto);
+      if (producto.imagenes.length == 0) {
+        throw new Error("Debe enviar al menos una imagen");
+      }
       //SI TIENE AL MENOS UNA IMAGEN SE CREA EL PRODUCTO
       const nuevoProducto = await this.prisma.producto.create({
         data: {
@@ -102,7 +100,7 @@ export class PrismaProductoRepository implements IProductoRepository {
           precio: parseFloat(producto.precio),
           precioOferta: parseFloat(producto.precioOferta),
           categoriaProductoId: parseInt(producto.categoriaProductoId),
-          usuarioId: 4,
+          usuarioId: parseInt(producto.usuarioId),
           estadoProductoId: parseInt(producto.estadoProductoId),
           marcas:{
             connect: JSON.parse(producto.marcas),
@@ -116,10 +114,9 @@ export class PrismaProductoRepository implements IProductoRepository {
       //DESDE AQUI SE CREA UNA CONSTANTE DE IMAGENES QUE CONTIENE UN ARREGLO DE IMAGENES CADA UNA CON UN NOMBRE UNICO
       const imagenes = producto.imagenes.map((imagen: any, index: number) => ({
         imgUrl:
-          "http://localhost:8000/public/" +
+        process.env.URL_IMAGENES +
           producto.nombre.replace(/\s/g, "") +
-          // producto.usuarioId +
-          4 +
+          producto.usuarioId +
           new Date().toISOString().slice(0, 10).replace(/-/g, "") +
           (index + 1) + // Use index + 1 to add the number at the end
           ".jpg",
@@ -171,7 +168,7 @@ export class PrismaProductoRepository implements IProductoRepository {
             precioOferta: producto.precioOferta,
             categoriaProductoId: parseInt(producto.categoriaProductoId),
             estadoProductoId: parseInt(producto.estadoProductoId),
-            usuarioId:4,
+            usuarioId: parseInt(producto.usuarioId),
             tamannos: {
                 disconnect: existingProduct.tamannos,
                 connect: JSON.parse(producto.tamannos),
@@ -183,12 +180,11 @@ export class PrismaProductoRepository implements IProductoRepository {
           },
         });
 
-        console.log(producto.imagenes);
         // Si hay imágenes nuevas enviadas, actualiza las imágenes del producto
         if (producto.imagenes && producto.imagenes.length > 0) {
           const newImages = producto.imagenes.map((image: any, index: number) => ({
             imgUrl:
-              "http://localhost:8000/public/" +
+               process.env.URL_IMAGENES+
               updatedProduct.nombre.replace(/\s/g, "") +
               updatedProduct.usuarioId +
               new Date().toISOString().slice(0, 10).replace(/-/g, "")+ (index+1) +
