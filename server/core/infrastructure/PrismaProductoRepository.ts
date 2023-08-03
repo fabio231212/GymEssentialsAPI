@@ -55,7 +55,12 @@ export class PrismaProductoRepository implements IProductoRepository {
           usuario: true,
           marcas: true,
           tamannos: true,
-          comentariosProducto: true,
+          comentariosProducto: {
+            include: {
+              usuario: true,
+            }
+          }
+
 
         },
       }) as Promise<Producto>;
