@@ -37,6 +37,7 @@ class Server {
     this.app.use(this.router.tammanos.path, this.router.tammanos.router);
     this.app.use(this.router.categorias.path, this.router.categorias.router);
     this.app.use(this.router.estadoProducto.path, this.router.estadoProducto.router);
+    this.app.use(this.router.comentario.path, this.router.comentario.router);
   }
   
   // Connect to database

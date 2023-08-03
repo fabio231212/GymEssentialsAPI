@@ -15,4 +15,8 @@ export class RolUseCase {
     // Aquí puedes agregar lógica adicional, como validaciones o encriptación de contraseñas, antes de guardar el usuario
     return this.rolRepository.crearRol(rol);
   }
+
+  getRol = async (): Promise<Rol[]> => {
+    return this.rolRepository.getRol();
+}
 }

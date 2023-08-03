@@ -8,6 +8,7 @@ import marcaRoute from "./marca_routes";
 import tammanoRoute from "./tammano_routes";
 import categoriaRoute from "./categoria_routes";
 import estadoPoductoRoute from "./estadoProducto_routes";
+import comentarioRoute from "./comentarioProd_routes";
 export const route = () =>{
 
      const apiPaths = {
@@ -42,7 +43,11 @@ export const route = () =>{
         estadoProducto: {
             'path' : '/api/estadoproducto',
             'router' : estadoPoductoRoute
-        }
+        },
+        comentario: {
+            'path' : '/api/comentario',
+            'router' : comentarioRoute
+        },
     }
 
     return apiPaths;

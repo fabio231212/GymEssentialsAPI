@@ -18,6 +18,7 @@ model Usuario {
   email                 String                @unique
   numCelular            String
   clave                 String
+  comentariosProducto   ComentarioProducto[]
   roles                 Rol[]
   direcciones           DireccionUsuario[]
   productos             Producto[]
@@ -46,24 +47,24 @@ model DireccionUsuario {
 }
 
 model Producto {
-  id                  Int                    @id @default(autoincrement())
+  id                  Int                  @id @default(autoincrement())
   nombre              String
-  descripcion         String                 @db.VarChar(500)
+  descripcion         String               @db.VarChar(500)
   stock               Int
-  descuento           Decimal                @db.Decimal(10, 2)
-  precio              Decimal                @db.Decimal(10, 2)
-  precioOferta        Decimal                @db.Decimal(10, 2)
+  descuento           Decimal              @db.Decimal(10, 2)
+  precio              Decimal              @db.Decimal(10, 2)
+  precioOferta        Decimal              @db.Decimal(10, 2)
   usuarioId           Int
-  usuario             Usuario                @relation(fields: [usuarioId], references: [id])
+  usuario             Usuario              @relation(fields: [usuarioId], references: [id])
   imagenes            ImagenProducto[]
   estadoProductoId    Int
-  estadoProducto      EstadoProducto         @relation(fields: [estadoProductoId], references: [id])
+  estadoProducto      EstadoProducto       @relation(fields: [estadoProductoId], references: [id])
   categoriaProductoId Int
-  categoriaProducto   CategoriaProducto      @relation(fields: [categoriaProductoId], references: [id])
+  categoriaProducto   CategoriaProducto    @relation(fields: [categoriaProductoId], references: [id])
   detallesFactura     DetalleFactura[]
   tamannos            tamanno[]
   marcas              marca[]
-  comentariosProducto CalificacionProducto[]
+  comentariosProducto ComentarioProducto[]
 }
 
 model marca {
@@ -147,10 +148,13 @@ model CalificacionUsuario {
   isVendedor   Boolean
 }
 
-model CalificacionProducto {
+model ComentarioProducto {
   id           Int      @id @default(autoincrement())
   calificacion Int
   comentario   String
   productoId   Int
+  usuarioId    Int?
+  fecha        DateTime
+  usuario      Usuario? @relation(fields: [usuarioId], references: [id])
   producto     Producto @relation(fields: [productoId], references: [id])
 }
