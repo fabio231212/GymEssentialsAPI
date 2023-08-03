@@ -13,21 +13,14 @@ export class UserController {
 
   createUser = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const user: Usuario = {
-        cedula: '208470478',
-        nombre: 'fabio',
-        apellidos: 'Ramirez',
-        email: 'ramirez@gmail.com',
-        clave: '123',
-        id: 0,
-        numCelular: '12',
-      };
-
-      const createdUser = await this.userCase.CrearUsuario(user);
-
-      return res.status(201).json(createdUser);
+      const userdata = req.body;
+      let salt = bcrypt.genSaltSync(10);
+      let hash=bcrypt.hashSync(userdata.clave,salt);
+      req.body.clave = hash;
+      const createdUser = await this.userCase.CrearUsuario(req.body);
+      return res.json(createdUser);
     } catch (error) {
-      return res.status(500).json({ message: error });
+      return res.json("Se cayo");
     }
   };
 
@@ -40,47 +33,36 @@ export class UserController {
   }
 
   login = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const password  = req.body.clave;
     try {
-      const user = await prisma.usuario.findUnique({
-        where: {
-          email,
-        },
-        include: {
-          roles: true,
-        },
-      });
+      const user = await this.userCase.login(req.body.email, req.body.clave)
 
       if (!user) {
         return res.status(404).send({ message: 'Usuario no encontrado' });
       }
       const checkPassword = await bcrypt.compare(password, user.clave);
-      // if (checkPassword === false) {
-      //   res.status(401).send({
-      //     success: false,
-      //     message: 'Credenciales no validas',
-      //   });
-      // }
-      if (user && user.clave === password) {
+      if (checkPassword === false) {
+        res.status(401).send({
+          success: false,
+          message: 'Credenciales no validas',
+        });
+      }else {
         // Generar el token JWT
-        const roles = user.roles.map((rol) => rol.descripcion);
+        
+        const roles = user.roles.map((rol: { descripcion: any; }) => rol.descripcion);
         const token = jwt.sign(
           {
             userId: user.id,
             nombre: user.nombre,
             mail: user.email,
             roles: roles,
-          },
-          'me_gustan_malvadas',
+          }, 'me_gustan_malvadas',
           {
-            expiresIn: '1h', //token dura 1 hora
+            expiresIn: process.env.JWT_EXPIRE, //token dura 1 hora
           }
         );
-
         res.json({ token: token });
-      } else {
-        res.status(404).send({ message: 'Usuario no encontrado' });
-      }
+      } 
     } catch (error) {
       return res.status(500).send({ message: error });
     }

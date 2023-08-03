@@ -15,4 +15,21 @@ export class PrismaRolRepository implements IRolRepository {
     this.prisma.$connect();
     return this.prisma.rol.create({ data: rol });
   }
+
+    //Obtiene todos los tamannos
+    getRol(): Promise<Rol[]> {
+      try {
+        return this.prisma.rol.findMany({
+          where:{
+            NOT: {
+              id: 1
+            }
+          }
+        });
+      } catch (error) {
+        // Manejo de errores
+        console.error(error);
+        throw new Error("Error al obtener los roles");
+      }
+    }
 }
