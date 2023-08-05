@@ -7,6 +7,7 @@ CREATE TABLE `Usuario` (
     `email` VARCHAR(191) NOT NULL,
     `numCelular` VARCHAR(191) NOT NULL,
     `clave` VARCHAR(191) NOT NULL,
+    `habilitado` BOOLEAN NOT NULL DEFAULT true,
 
     UNIQUE INDEX `Usuario_cedula_key`(`cedula`),
     UNIQUE INDEX `Usuario_email_key`(`email`),

@@ -2,7 +2,7 @@
 
 import { PrismaClient, Producto } from "@prisma/client"; // Importa el modelo generado por Prisma
 import { IProductoRepository } from "./Interfaces/IProductoRepository";
-import ImageUploader from "../presentation/controllers/storageController";
+import ImageUploader from "../presentation/controllers/StorageMIddleware";
 
 export class PrismaProductoRepository implements IProductoRepository {
   private prisma: PrismaClient;

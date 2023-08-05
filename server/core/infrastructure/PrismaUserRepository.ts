@@ -11,6 +11,35 @@ export class PrismaUserRepository implements IUserRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  getUsuarios(): Promise<Usuario[]> {
+    try {
+      return this.prisma.usuario.findMany({
+        include: {
+          roles: true
+        },
+      });
+    } catch (error) {
+      // Manejo de errores
+      console.error(error);
+      throw new Error("Error al obtener los usuarios");
+    }
+  }
+  updateHabilitado(id: number, habilitado: boolean): Promise<Usuario> {
+    try {
+      return this.prisma.usuario.update({
+        where: {
+          id: id,
+        },
+        data: {
+          habilitado: habilitado,
+        },
+      });
+    } catch (error) {
+      // Manejo de errores
+      console.error(error);
+      throw new Error("Error al actualizar el usuario");
+    }
+  }
 
   async createUser(user: any): Promise<Usuario> {
     try {
@@ -45,7 +74,7 @@ export class PrismaUserRepository implements IUserRepository {
         },
       });
 
-      // Se encontró el usuario y la contraseña coincide
+      // Se encontró el usuario
       if (usuario) {
         return usuario;
       } else {
