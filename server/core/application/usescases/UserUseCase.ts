@@ -11,11 +11,18 @@ export class UserUseCase {
   }
 
   async CrearUsuario(user: Usuario): Promise<Usuario> {
-    // Aquí puedes agregar lógica adicional, como validaciones o encriptación de contraseñas, antes de guardar el usuario
     return this.userRepository.createUser(user);
   }
 
   async login(email: string, password: string): Promise<any | null> {
     return this.userRepository.login(email, password);
+  }
+
+  async getUsuarios(): Promise<Usuario[]> {
+    return this.userRepository.getUsuarios();
+  }
+
+  async updateHabilitado(id: number, habilitado: boolean): Promise<Usuario> {
+    return this.userRepository.updateHabilitado(id, habilitado);
   }
 }

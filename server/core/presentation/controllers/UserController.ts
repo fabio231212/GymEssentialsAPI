@@ -24,13 +24,6 @@ export class UserController {
     }
   };
 
-  async getUser(req: Request, res: Response) {
-    const { id } = req.params;
-    res.json({
-      msg: 'getUsuarios',
-      id,
-    });
-  }
 
   login = async (req: Request, res: Response) => {
     const password  = req.body.clave;
@@ -39,6 +32,9 @@ export class UserController {
 
       if (!user) {
         return res.status(404).send({ message: 'Usuario no encontrado' });
+      }
+      if (!user.habilitado) {
+        return res.status(401).send({ message: 'Usuario no habilitado' });
       }
       const checkPassword = await bcrypt.compare(password, user.clave);
       if (checkPassword === false) {
@@ -67,4 +63,24 @@ export class UserController {
       return res.status(500).send({ message: error });
     }
   };
+
+  getUsuarios = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const usuarios = await this.userCase.getUsuarios();
+      return res.json(usuarios);
+    } catch (error) {
+      return res.json("No se pudo obtener los usuarios");
+    }
+  }
+
+  updateHabilitado = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { id } = req.params;
+      const { habilitado } = req.body;
+      const usuario = await this.userCase.updateHabilitado(parseInt(id), habilitado);
+      return res.json(usuario);
+    } catch (error) {
+      return res.json("No se pudo actualizar el usuario");
+    }
+  }
 }
