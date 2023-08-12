@@ -50,6 +50,8 @@ export class UserController {
           {
             userId: user.id,
             nombre: user.nombre,
+            apellidos: user.apellidos,
+            fotoPerfil: user.fotoPerfil,
             mail: user.email,
             roles: roles,
           }, 'me_gustan_malvadas',
