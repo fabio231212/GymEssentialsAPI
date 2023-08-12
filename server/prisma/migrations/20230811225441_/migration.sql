@@ -8,6 +8,7 @@ CREATE TABLE `Usuario` (
     `numCelular` VARCHAR(191) NOT NULL,
     `clave` VARCHAR(191) NOT NULL,
     `habilitado` BOOLEAN NOT NULL DEFAULT true,
+    `fotoPerfil` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Usuario_cedula_key`(`cedula`),
     UNIQUE INDEX `Usuario_email_key`(`email`),
@@ -30,7 +31,6 @@ CREATE TABLE `DireccionUsuario` (
     `distrito` VARCHAR(191) NOT NULL,
     `sennas` VARCHAR(191) NOT NULL,
     `codPostal` VARCHAR(191) NOT NULL,
-    `telefono` VARCHAR(191) NOT NULL,
     `usuarioId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -118,7 +118,10 @@ CREATE TABLE `EstadoPedido` (
 -- CreateTable
 CREATE TABLE `MetodoPago` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `descripcion` VARCHAR(191) NOT NULL,
+    `numTarjeta` VARCHAR(191) NOT NULL,
+    `mesVencimiento` VARCHAR(191) NOT NULL,
+    `anioVencimiento` VARCHAR(191) NOT NULL,
+    `propietarioTarjeta` VARCHAR(191) NOT NULL,
     `idUsuario` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
