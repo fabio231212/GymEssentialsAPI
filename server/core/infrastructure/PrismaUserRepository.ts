@@ -2,8 +2,8 @@
 
 import { PrismaClient, Rol, Usuario } from "@prisma/client"; // Importa el modelo generado por Prisma
 import { IUserRepository } from "./Interfaces/IUserRepository";
-import e from "express";
-import { connect } from "http2";
+import { parse } from "path";
+
 
 export class PrismaUserRepository implements IUserRepository {
   private prisma: PrismaClient;
@@ -51,14 +51,41 @@ export class PrismaUserRepository implements IUserRepository {
           clave: user.clave,
           email: user.email,
           numCelular: user.numCelular,
+          fotoPerfil: process.env.URL_IMAGENES+user.nombre.replace(/\s/g, "")+user.apellidos.replace(/\s/g, "")+ user.cedula.replace(/\s/g, "") +".jpg",
           roles : {
-            connect : user.roles
+            connect : JSON.parse(user.roles)
           }
         },
       });
+
+      if (user?.propietarioTarjeta) {
+        await this.prisma.metodoPago.createMany({
+          data: {
+            propietarioTarjeta: user.propietarioTarjeta,
+            numTarjeta: user.numeroTarjeta,
+            anioVencimiento: parseInt(user.anioVencimiento),
+            mesVencimiento: user.mesVencimiento,  
+            idUsuario: nuevoUsuario.id,
+          }
+        });
+      }
+
+      if(user.provincia){
+        await this.prisma.direccionUsuario.createMany({
+          data: {
+            provincia: user.provincia,
+            canton: user.canton,
+            distrito: user.distrito,
+            sennas: user.otrasSennas,
+            codPostal: user.zip,
+            usuarioId: nuevoUsuario.id,
+          }
+        });
+      }
       return nuevoUsuario;
     } catch (error) {
       throw new Error("Error al crear el usuario");
+      console.log(error);
     }
   }
 

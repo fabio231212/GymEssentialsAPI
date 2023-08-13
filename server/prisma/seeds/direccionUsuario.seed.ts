@@ -5,7 +5,6 @@ export const direccionUsuario = [
     distrito: 'San Pedro',
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
-    telefono: '0987654321',
     usuarioId: 3
 },
 {
@@ -14,7 +13,6 @@ export const direccionUsuario = [
     distrito: 'Barva',
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
-    telefono: '0987654321',
     usuarioId: 4
 },
 {
@@ -23,7 +21,6 @@ export const direccionUsuario = [
     distrito: 'Carmen',
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
-    telefono: '0987654321',
     usuarioId: 3
 },
 {
@@ -32,7 +29,6 @@ export const direccionUsuario = [
     distrito: 'Distrito',
     sennas: 'Av. 6 de Diciembre',
     codPostal: '170150',
-    telefono: '0987654321',
     usuarioId: 5
 }
 ]

@@ -22,5 +22,21 @@ class ImageUploader {
       },
     }),
   });
+
+  public static uploadFotoPerfil = multer({
+    storage: multer.diskStorage({
+      destination: function (req: Request, file: any, cb: any) {
+        cb(null, "./storage/imgs");
+      },
+      filename: function (req: Request, file: any, cb: any) {
+        console.log(req.body)
+        cb(
+          null,
+          req.body.nombre.replace(/\s/g, "") + req.body.apellidos.replace(/\s/g, "") + req.body.cedula.replace(/\s/g, "") 
+            + ".jpg"
+        );
+      },
+    }),
+  });
 }
 export default ImageUploader;

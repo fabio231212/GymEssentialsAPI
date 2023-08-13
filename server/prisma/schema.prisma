@@ -19,6 +19,7 @@ model Usuario {
   numCelular            String
   clave                 String
   habilitado            Boolean               @default(true)
+  fotoPerfil            String
   comentariosProducto   ComentarioProducto[]
   roles                 Rol[]
   direcciones           DireccionUsuario[]
@@ -41,7 +42,6 @@ model DireccionUsuario {
   distrito          String
   sennas            String
   codPostal         String
-  telefono          String
   usuarioId         Int
   usuario           Usuario             @relation(fields: [usuarioId], references: [id])
   EncabezadoFactura EncabezadoFactura[]
@@ -121,11 +121,14 @@ model EstadoPedido {
 }
 
 model MetodoPago {
-  id                Int                 @id @default(autoincrement())
-  descripcion       String
-  idUsuario         Int
-  usuario           Usuario             @relation(fields: [idUsuario], references: [id])
-  EncabezadoFactura EncabezadoFactura[]
+  id                  Int                 @id @default(autoincrement())
+  numTarjeta          String
+  mesVencimiento      String
+  anioVencimiento     Int
+  propietarioTarjeta  String
+  idUsuario           Int
+  usuario             Usuario             @relation(fields: [idUsuario], references: [id])
+  EncabezadoFactura   EncabezadoFactura[]
 }
 
 model DetalleFactura {

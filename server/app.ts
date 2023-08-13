@@ -34,12 +34,8 @@ server.io.on('connection', (client: Socket) => {
     let recibe = null;
     let persona = usuariosChat.getPersona(client.id);
 
-    if (typeof data.para === 'string') {
-      recibe = usuariosChat.getPersona(data.para);
-    } else {
-      recibe = usuariosChat.getPersonaByIdUser(data.para);
-    }
-
+    recibe = usuariosChat.getPersonaByIdUser(data.para);
+    if (recibe == null) return;
     client.broadcast
       .to(recibe.id)
       .emit(

@@ -1,14 +1,23 @@
 export const metodoPago = [
     {
-      descripcion: "Debito",
       idUsuario: 3,
+      numTarjeta:    "1234123412341234",      
+      mesVencimiento:   "Enero"   ,
+      anioVencimiento:     2025,
+      propietarioTarjeta:  "Antonio Ramirez"
     },
     {
-      descripcion: "Crédito",
       idUsuario: 3,
+      numTarjeta:    "1234123412341234",      
+      mesVencimiento:   "Mayo"   ,
+      anioVencimiento:     2024,
+      propietarioTarjeta:  "Antonio Ramirez"
     },
     {
-      descripcion: "Paypal",
       idUsuario: 5,
+      numTarjeta:    "1234123412341234",      
+      mesVencimiento:   "Diciembre"   ,
+      anioVencimiento:     2026,
+      propietarioTarjeta:  "Anibal Alpizar"
     },
   ];
