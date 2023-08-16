@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { FacturaUseCase } from '../../application/usescases/FacturaUseCase';
 import e, { Request, Response } from 'express';
 export class FacturaController {
@@ -6,6 +7,107 @@ export class FacturaController {
   constructor() {
     this.facturaUseCase = new FacturaUseCase();
   }
+
+  createFactura = async (req: Request, res: Response) => {
+    const infoOrden = req.body;
+  
+    try {
+      const prisma = new PrismaClient();
+  
+      const factura = await prisma.$transaction(async (tx) => {
+        let direccion = null;
+        let metodoPago = null;
+  
+        if (infoOrden.EncabezadoFactura.idDireccion === null) {
+          direccion = await tx.direccionUsuario.create({
+            data: {
+              provincia: infoOrden.Direccion.provincia,
+              canton: infoOrden.Direccion.canton,
+              distrito: infoOrden.Direccion.distrito,
+              sennas: infoOrden.Direccion.otrasSennas,
+              codPostal: infoOrden.Direccion.zip,
+              usuarioId: infoOrden.EncabezadoFactura.usuarioId,
+            },
+          });
+        }
+  
+        if (infoOrden.EncabezadoFactura.metodoPagoId === null) {
+          metodoPago = await tx.metodoPago.create({
+            data: {
+              numTarjeta: infoOrden.MetodoPago.numTarjeta,
+              propietarioTarjeta: infoOrden.MetodoPago.propietarioTarjeta,
+              mesVencimiento: infoOrden.MetodoPago.mesVencimiento,
+              anioVencimiento: Number.parseInt(infoOrden.MetodoPago.anioVencimiento),
+              idUsuario: infoOrden.EncabezadoFactura.usuarioId,
+            },
+          });
+        }
+  
+        const encabezadoFactura = await tx.encabezadoFactura.create({
+          data: {
+            fechaCompra: infoOrden.EncabezadoFactura.fechaCompra,
+            usuarioId: infoOrden.EncabezadoFactura.usuarioId,
+            numTarjeta: infoOrden.EncabezadoFactura.numTarjeta,
+            subTotal: infoOrden.EncabezadoFactura.subtotal,
+            total: infoOrden.EncabezadoFactura.total,
+            metodoPagoId: infoOrden.EncabezadoFactura.metodoPagoId || metodoPago?.id,
+            IdDireccion: infoOrden.EncabezadoFactura.idDireccion || direccion?.id,
+          },
+        });
+  
+        const detallesFactura = await tx.detalleFactura.createMany({
+          data: infoOrden.DetallesFactura.detalles.map((detalle: {
+            cantidad: number;
+            precioUnitario: number;
+            productoId: number;
+            estadoPedidoId: number;
+          }) => ({
+            cantidad: detalle.cantidad,
+            precioUnitario: detalle.precioUnitario,
+            encabezadosFacturaId: encabezadoFactura.id,
+            productoId: detalle.productoId,
+            estadoPedidoId: detalle.estadoPedidoId,
+          })),
+        });
+  
+        const stockUpdates = infoOrden.DetallesFactura.detalles.map((detalle: any) => ({
+          id: detalle.productoId,
+          cantidad: detalle.cantidad,
+        }));
+  
+        await Promise.all(
+          stockUpdates.map(async (update: any) => {
+            const producto = await tx.producto.findUnique({
+              where: { id: update.id },
+            });
+  
+            if (producto) {
+              const nuevoStock = producto.stock - update.cantidad;
+  
+              await tx.producto.update({
+                where: { id: update.id },
+                data: { stock: nuevoStock },
+              });
+            }
+          })
+        );
+  
+        return encabezadoFactura;
+      });
+  
+      return res.json({ factura, message: 'Factura creada correctamente', success: true });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({ error: 'Error al crear factura' });
+    }
+  };
+  
+  
+  
+  
+  
+  
+  
 
   getFacturasByUsuario = async (req: Request, res: Response) => {
     let idUsuario = parseInt(req.params.idUsuario);

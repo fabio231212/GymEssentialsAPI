@@ -7,6 +7,46 @@ export class PrismaFacturaRepository implements IFacturaRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  createFactura(data: any): Promise<any> {
+    return this.prisma.$transaction(async (tx) => {
+      // Crear método de pago
+      if(data.metodoPago!=null){
+      const metodoPago = await tx.metodoPago.create({
+        data: data.encabezadoFactura.metodoPago,
+      });
+    
+
+    if(data.direccion!=null){
+      // Crear dirección
+      const direccion = await tx.direccionUsuario.create({
+        data: data.encabezadoFactura.direccion,
+      });
+    
+
+      // Asociar dirección y método de pago al encabezado de factura
+      data.encabezadoFactura.metodoPagoId = metodoPago.id;
+      data.encabezadoFactura.IdDireccion = direccion.id;
+    }
+  }
+      // Crear encabezado de factura
+      const encabezadoFactura = await tx.encabezadoFactura.create({
+        data: data.encabezadoFactura,
+      });
+
+      // Asociar encabezado de factura a los detalles de factura
+      const detallesFactura = data.encabezadoFactura.detallesFactura.map((detalle: { encabezadosFacturaId: number; }) => {
+        detalle.encabezadosFacturaId = encabezadoFactura.id;
+        return detalle;
+      });
+
+      // Crear detalles de factura
+      const detallesFacturaCreated = await tx.detalleFactura.createMany({
+        data: detallesFactura,
+      });
+
+      return { encabezadoFactura, detallesFactura: detallesFacturaCreated };
+    });
+  }
   getProductosByVendedor(idVendedor: number): Promise<DetalleFactura[]> {
     try {
       // return this.prisma.encabezadoFactura.findMany({
@@ -43,7 +83,7 @@ export class PrismaFacturaRepository implements IFacturaRepository {
           encabezadosFactura: true,
         },
       });
-  
+
     } catch (error) {
       console.error(error);
       throw new Error("Error al obtener los productos del vendedor");
