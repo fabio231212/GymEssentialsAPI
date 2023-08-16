@@ -38,8 +38,10 @@ class Server {
     this.app.use(this.router.categorias.path, this.router.categorias.router);
     this.app.use(this.router.estadoProducto.path, this.router.estadoProducto.router);
     this.app.use(this.router.comentario.path, this.router.comentario.router);
+    this.app.use(this.router.metodoPago.path, this.router.metodoPago.router);
+    this.app.use(this.router.direccion.path, this.router.direccion.router);
   }
-  
+
   // Connect to database
 
   middlewares() {

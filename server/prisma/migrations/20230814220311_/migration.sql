@@ -45,6 +45,7 @@ CREATE TABLE `Producto` (
     `descuento` DECIMAL(10, 2) NOT NULL,
     `precio` DECIMAL(10, 2) NOT NULL,
     `precioOferta` DECIMAL(10, 2) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `usuarioId` INTEGER NOT NULL,
     `estadoProductoId` INTEGER NOT NULL,
     `categoriaProductoId` INTEGER NOT NULL,
@@ -120,7 +121,7 @@ CREATE TABLE `MetodoPago` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `numTarjeta` VARCHAR(191) NOT NULL,
     `mesVencimiento` VARCHAR(191) NOT NULL,
-    `anioVencimiento` VARCHAR(191) NOT NULL,
+    `anioVencimiento` INTEGER NOT NULL,
     `propietarioTarjeta` VARCHAR(191) NOT NULL,
     `idUsuario` INTEGER NOT NULL,
 

@@ -48,4 +48,21 @@ export class ProductoController {
     const productoEditado = await this.productoUseCase.editProduct(producto);
     res.json(productoEditado);
   }
+
+  getProductsByComentario = async (req: Request, res: Response) => {
+    const productos = await this.productoUseCase.getProdructsByComentario();
+    res.json(productos);
+  };
+
+  getProductsWithHigherDiscount = async (req: Request, res: Response) => {
+    const productos = await this.productoUseCase.getProductsWithHigherDiscount();
+    res.json(productos);
+  }
+
+  getNewProducts = async (req: Request, res: Response) => {
+    const productos = await this.productoUseCase.getNewProducts();
+    res.json(productos);
+  }
+
+  
 }
