@@ -6,7 +6,7 @@ export const usuario = [
         email: 'sebas@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "http://localhost:8000/public/ingmurillofucker.png",
         roles: {
             connect: { id: 1 }
         }
@@ -18,7 +18,7 @@ export const usuario = [
         email: 'fabio@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "http://localhost:8000/public/ingramirezfucker.png",
         roles: {
             connect: { id: 1 }
         }
@@ -30,7 +30,7 @@ export const usuario = [
         email: 'antonio@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "http://localhost:8000/public/ingtonyfucker.png",
         roles: {
             connect: { id: 2 }
         }
@@ -43,7 +43,7 @@ export const usuario = [
         email: 'carlo@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "http://localhost:8000/public/ingbonillafucker.png",
         roles: {
             connect: { id: 3 }
         },
@@ -55,7 +55,7 @@ export const usuario = [
         email: 'anibal@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "http://localhost:8000/public/Creatine.jpg",
         roles: {
             connect: [{ id: 2 }, { id: 3 }]
         }
