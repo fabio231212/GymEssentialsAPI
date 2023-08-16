@@ -26,6 +26,7 @@ export class PrismaUserRepository implements IUserRepository {
   }
   updateHabilitado(id: number, habilitado: boolean): Promise<Usuario> {
     try {
+
       return this.prisma.usuario.update({
         where: {
           id: id,
@@ -51,9 +52,9 @@ export class PrismaUserRepository implements IUserRepository {
           clave: user.clave,
           email: user.email,
           numCelular: user.numCelular,
-          fotoPerfil: process.env.URL_IMAGENES+user.nombre.replace(/\s/g, "")+user.apellidos.replace(/\s/g, "")+ user.cedula.replace(/\s/g, "") +".jpg",
-          roles : {
-            connect : JSON.parse(user.roles)
+          fotoPerfil: process.env.URL_IMAGENES + user.nombre.replace(/\s/g, "") + user.apellidos.replace(/\s/g, "") + user.cedula.replace(/\s/g, "") + ".jpg",
+          roles: {
+            connect: JSON.parse(user.roles)
           }
         },
       });
@@ -64,13 +65,13 @@ export class PrismaUserRepository implements IUserRepository {
             propietarioTarjeta: user.propietarioTarjeta,
             numTarjeta: user.numeroTarjeta,
             anioVencimiento: parseInt(user.anioVencimiento),
-            mesVencimiento: user.mesVencimiento,  
+            mesVencimiento: user.mesVencimiento,
             idUsuario: nuevoUsuario.id,
           }
         });
       }
 
-      if(user.provincia){
+      if (user.provincia) {
         await this.prisma.direccionUsuario.createMany({
           data: {
             provincia: user.provincia,

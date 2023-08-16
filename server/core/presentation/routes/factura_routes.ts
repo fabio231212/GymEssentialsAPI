@@ -17,6 +17,7 @@ facturaRoute.get(
   verifyToken,
   facturaController.getProductosByVendedor
 );
+facturaRoute.post('/', verifyToken, facturaController.createFactura);
 // router.post('/', postUsuario);
 // router.put('/:id', putUsuario);
 // router.delete('/:id', deleteUsuario);

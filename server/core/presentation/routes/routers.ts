@@ -9,45 +9,55 @@ import tammanoRoute from "./tammano_routes";
 import categoriaRoute from "./categoria_routes";
 import estadoPoductoRoute from "./estadoProducto_routes";
 import comentarioRoute from "./comentarioProd_routes";
-export const route = () =>{
+import metodoPagoRoute from "./metodoPago_routes";
+import direccionRouter from "./direccion_routes";
+export const route = () => {
 
-     const apiPaths = {
+    const apiPaths = {
         usuarios: {
-            'path' : '/api/usuarios',
-            'router' : userRoute
+            'path': '/api/usuarios',
+            'router': userRoute
         },
         roles: {
-            'path' : '/api/roles',
-            'router' : rolRouter
+            'path': '/api/roles',
+            'router': rolRouter
         },
         productos: {
-            'path' : '/api/productos',
-            'router' : productoRouter
+            'path': '/api/productos',
+            'router': productoRouter
         },
         facturas: {
-            'path' : '/api/facturas',
-            'router' : facturaRoute
+            'path': '/api/facturas',
+            'router': facturaRoute
         },
         marcas: {
-            'path' : '/api/marcas',
-            'router' : marcaRoute
+            'path': '/api/marcas',
+            'router': marcaRoute
         },
         tammanos: {
-            'path' : '/api/tamannos',
-            'router' : tammanoRoute
+            'path': '/api/tamannos',
+            'router': tammanoRoute
         },
         categorias: {
-            'path' : '/api/categorias',
-            'router' : categoriaRoute
+            'path': '/api/categorias',
+            'router': categoriaRoute
         },
         estadoProducto: {
-            'path' : '/api/estadoproducto',
-            'router' : estadoPoductoRoute
+            'path': '/api/estadoproducto',
+            'router': estadoPoductoRoute
         },
         comentario: {
-            'path' : '/api/comentario',
-            'router' : comentarioRoute
+            'path': '/api/comentario',
+            'router': comentarioRoute
         },
+        metodoPago: {
+            'path': '/api/metodopago',
+            'router': metodoPagoRoute
+        },
+        direccion: {
+            'path': '/api/direccion',
+            'router': direccionRouter
+        }
     }
 
     return apiPaths;

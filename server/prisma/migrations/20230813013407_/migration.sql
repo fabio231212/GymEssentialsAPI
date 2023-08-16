@@ -120,7 +120,7 @@ CREATE TABLE `MetodoPago` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `numTarjeta` VARCHAR(191) NOT NULL,
     `mesVencimiento` VARCHAR(191) NOT NULL,
-    `anioVencimiento` VARCHAR(191) NOT NULL,
+    `anioVencimiento` INTEGER NOT NULL,
     `propietarioTarjeta` VARCHAR(191) NOT NULL,
     `idUsuario` INTEGER NOT NULL,
 
