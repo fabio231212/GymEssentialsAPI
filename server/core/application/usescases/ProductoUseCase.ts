@@ -27,4 +27,13 @@ export class ProductoUseCase{
     editProduct= async (producto: any): Promise<Producto> => {
         return this.productoRepository.editProduct(producto);
     }
+    getProductsByComentario(): Promise<any> {
+        return this.productoRepository.getProdructsByComentario();
+    }
+    getProductsWithHigherDiscount(): Promise<any> {
+        return this.productoRepository.getProductsWithHigherDiscount();
+    }
+    getNewProducts(): Promise<any> {
+        return this.productoRepository.getNewProducts();
+    }
 }

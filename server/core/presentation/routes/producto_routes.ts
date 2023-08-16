@@ -12,11 +12,15 @@ const productoController = new ProductoController();
 
 
 productoRoute.get('/', productoController.getProductos);
+productoRoute.get('/calificacion', productoController.getProductsByComentario);
+productoRoute.get('/nuevo', productoController.getNewProducts);
+productoRoute.get('/descuento', productoController.getProductsWithHigherDiscount);
 productoRoute.get('/:id', productoController.getProductoById);
 productoRoute.get('/idVendedor/:idVendedor', verifyToken, productoController.getProductosByIdVendedor
 );
 productoRoute.get('/categoria/:idCategoria', productoController.getProductsByCategory
 );
+
 
 
 //Se utiliza la función 'upload.array' para procesar hasta 5 archivos con el nombre 'imagenes' adjuntados a la solicitud

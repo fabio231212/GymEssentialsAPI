@@ -90,7 +90,6 @@ export class PrismaUserRepository implements IUserRepository {
   }
 
   async login(email: string, password: string): Promise<any | null> {
-    console.log(email + password)
     try {
       const usuario = await this.prisma.usuario.findUnique({
         where: {

@@ -4,6 +4,7 @@ import { PrismaClient, Producto } from "@prisma/client"; // Importa el modelo ge
 import { IProductoRepository } from "./Interfaces/IProductoRepository";
 import ImageUploader from "../presentation/controllers/StorageMIddleware";
 
+
 export class PrismaProductoRepository implements IProductoRepository {
   private prisma: PrismaClient;
 
@@ -11,19 +12,89 @@ export class PrismaProductoRepository implements IProductoRepository {
     this.prisma = new PrismaClient();
   }
 
+  getNewProducts(): Promise<any> {
+    try {
+      const newProducts = this.prisma.producto.findMany({
+        include: {
+          categoriaProducto: true,
+          imagenes: true,
+          estadoProducto: { select: { descripcion: true } },
+          marcas: true,
+          tamannos: true,         
+        },
+        orderBy: {
+          createdAt: 'desc', // Ordenar por descuento en orden descendente
+        },
+        take: 7, // Obtener los primeros 7 productos
+      });
+  
+      return newProducts;
+    } catch (error) {
+      // Manejo de errores
+      throw new Error("Error al obtener los productos ");
+
+    }
+  }
+  getProductsWithHigherDiscount(): Promise<any> {
+    try {
+      const productsWithDiscount = this.prisma.producto.findMany({
+        include: {
+          categoriaProducto: true,
+          imagenes: true,
+          estadoProducto: { select: { descripcion: true } },
+          marcas: true,
+          tamannos: true,         
+        },
+        orderBy: {
+          descuento: 'desc', // Ordenar por descuento en orden descendente
+        },
+        take: 7, // Obtener los primeros 7 productos
+        where: {
+          descuento: {
+            gt: 0, // Obtener los productos con descuento mayor a 0
+          }
+        }
+      });
+  
+      return productsWithDiscount;
+    } catch (error) {
+      // Manejo de errores
+      throw new Error("Error al obtener los productos con mayor descuento");
+
+    }
+  }
+
+
   //Obtiene los productos de un vendedor
   getProductoByIdVendedor(id: number): Promise<Producto[]> {
     try {
-      return this.prisma.producto.findMany({ where: { usuarioId: id } });
+      return this.prisma.producto.findMany({ where: { usuarioId: id }, include:{
+        imagenes: true,
+        estadoProducto: { select: { descripcion: true } },
+        marcas: true,
+        tamannos: true,
+        categoriaProducto: true,
+      } });
     } catch (error) {
       console.error(error);
       throw new Error("Error al obtener los productos del vendedor");
     }
   }
-
-  crearProducto(producto: Producto): Promise<Producto> {
-    throw new Error("Method not implemented.");
+  
+  async getProdructsByComentario(): Promise<any> {
+    try {
+      const productosConMasComentarios = await this.prisma.producto.findMany({
+        take: 7
+      });
+  
+      return productosConMasComentarios;
+    } catch (error) {
+      throw error;
+    }
   }
+  
+  
+
 
   //Obtiene todos los productos
   getProductos(): Promise<Producto[]> {
@@ -99,21 +170,22 @@ export class PrismaProductoRepository implements IProductoRepository {
         data: {
           nombre: producto.nombre,
           descripcion: producto.descripcion,
-          stock: parseInt(producto.stock),
-          descuento: parseFloat(producto.descuento),
-          precio: parseFloat(producto.precio),
-          precioOferta: parseFloat(producto.precioOferta),
-          categoriaProductoId: parseInt(producto.categoriaProductoId),
-          usuarioId: parseInt(producto.usuarioId),
-          estadoProductoId: parseInt(producto.estadoProductoId),
-          marcas:{
+          stock: parseInt(producto.stock) ?? 0,
+          descuento: parseFloat(producto.descuento) ?? 0,
+          precio: parseFloat(producto.precio) ?? 0,
+          precioOferta: parseFloat(producto.precioOferta) ?? 0,
+          categoriaProductoId: parseInt(producto.categoriaProductoId) ?? 0,
+          usuarioId: parseInt(producto.usuarioId) ?? 0,
+          estadoProductoId: parseInt(producto.estadoProductoId) ?? 0,
+          marcas: {
             connect: JSON.parse(producto.marcas),
           },
-          tamannos:{
+          tamannos: {
             connect: JSON.parse(producto.tamannos),
-          }
+          },
         },
       });
+      
 
       //DESDE AQUI SE CREA UNA CONSTANTE DE IMAGENES QUE CONTIENE UN ARREGLO DE IMAGENES CADA UNA CON UN NOMBRE UNICO
       const imagenes = producto.imagenes.map((imagen: any, index: number) => ({

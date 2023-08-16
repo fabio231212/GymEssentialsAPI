@@ -55,6 +55,7 @@ model Producto {
   descuento           Decimal              @db.Decimal(10, 2)
   precio              Decimal              @db.Decimal(10, 2)
   precioOferta        Decimal              @db.Decimal(10, 2)
+  createdAt   DateTime            @default(now())
   usuarioId           Int
   usuario             Usuario              @relation(fields: [usuarioId], references: [id])
   imagenes            ImagenProducto[]
