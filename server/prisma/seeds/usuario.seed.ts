@@ -3,10 +3,10 @@ export const usuario = [
         cedula: '1',
         nombre: 'Sebastian',
         apellidos: 'Murillo',
-        email: 'sebasmu223@gmail.com',
+        email: 'sebas@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil : "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
         roles: {
             connect: { id: 1 }
         }
@@ -15,10 +15,10 @@ export const usuario = [
         cedula: '2',
         nombre: 'Fabio',
         apellidos: 'Ramirez',
-        email: 'prueba1@gmail.com',
+        email: 'fabio@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil : "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
         roles: {
             connect: { id: 1 }
         }
@@ -27,10 +27,10 @@ export const usuario = [
         cedula: '3',
         nombre: 'Antonio',
         apellidos: 'Ramirez',
-        email: 'prueba2@gmail.com',
+        email: 'antonio@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil : "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
         roles: {
             connect: { id: 2 }
         }
@@ -40,10 +40,10 @@ export const usuario = [
         cedula: '4',
         nombre: 'Carlo',
         apellidos: 'Bonilla',
-        email: 'prueba3@gmail.com',
+        email: 'carlo@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil : "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
         roles: {
             connect: { id: 3 }
         },
@@ -52,12 +52,36 @@ export const usuario = [
         cedula: '5',
         nombre: 'Anibal',
         apellidos: 'Alpizar',
-        email: 'prueba4@gmail.com',
+        email: 'anibal@gmail.com',
         numCelular: '0987654321',
         clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
-        fotoPerfil : "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+        fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
         roles: {
             connect: [{ id: 2 }, { id: 3 }]
         }
     },
+    // {
+    //     cedula: '6',
+    //     nombre: 'Charly',
+    //     apellidos: 'Pita',
+    //     email: 'charly@gmail.com',
+    //     numCelular: '0987654321',
+    //     clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
+    //     fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+    //     roles: {
+    //         connect: { id: 2 }
+    //     }
+    // },
+    // {
+    //     cedula: '7',
+    //     nombre: 'Gabo',
+    //     apellidos: 'Ulate',
+    //     email: 'gabo@gmail.com',
+    //     numCelular: '0987654321',
+    //     clave: '$2b$10$zVHX2keiSU25Dd1fBdU6Jujvh60ozliMEV9CXNkKbKRmD0YKJskCu',
+    //     fotoPerfil: "https://res.cloudinary.com/dy1xcx7kw/image/upload/v1623688856/usuarios/1.jpg",
+    //     roles: {
+    //         connect: [{ id: 2 }, { id: 3 }]
+    //     }
+    // },
 ]

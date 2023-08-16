@@ -50,7 +50,7 @@ export class ProductoController {
   }
 
   getProductsByComentario = async (req: Request, res: Response) => {
-    const productos = await this.productoUseCase.getProdructsByComentario();
+    const productos = await this.productoUseCase.getProductsByComentario();
     res.json(productos);
   };
 
