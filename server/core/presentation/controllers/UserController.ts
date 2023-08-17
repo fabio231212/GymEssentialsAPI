@@ -37,7 +37,7 @@ export class UserController {
       if (!user.habilitado) {
         return res
           .status(401)
-          .send({ success: false, message: "Usuario no habilitado" });
+          .send({ success: false, message: "Usuario inhabilitado" });
       }
       const checkPassword = await bcrypt.compare(password, user.clave);
       if (checkPassword === false) {

@@ -1,6 +1,7 @@
 import { DetalleFactura, EncabezadoFactura, PrismaClient, Producto } from "@prisma/client";
 import { IFacturaRepository } from "./Interfaces/IFacturaRepository";
 import { usuario } from "../../prisma/seeds/usuario.seed";
+import { imagenProducto } from "../../prisma/seeds/imagenProducto.seed";
 
 export class PrismaFacturaRepository implements IFacturaRepository {
   private prisma: PrismaClient;
@@ -49,29 +50,6 @@ export class PrismaFacturaRepository implements IFacturaRepository {
   }
   getProductosByVendedor(idVendedor: number): Promise<DetalleFactura[]> {
     try {
-      // return this.prisma.encabezadoFactura.findMany({
-      //   where: {
-      //     detallesFactura: {
-      //       some: {
-      //         producto: {
-      //           usuarioId: idVendedor,
-      //         },
-      //       },
-      //     },
-      //   },
-      //   include: {
-      //     detallesFactura: {
-      //       where: {
-      //         producto: {
-      //           usuarioId: idVendedor,
-      //         },
-      //       },
-      //       include: {
-      //         producto: true,
-      //       },
-      //     },
-      //   },
-
       return this.prisma.detalleFactura.findMany({
         where: {
           producto: {
@@ -98,7 +76,11 @@ export class PrismaFacturaRepository implements IFacturaRepository {
         where: { usuarioId: idUsuario },
         include: {
           usuario: true,
-          detallesFactura: { include: { producto: true } },
+          detallesFactura: { include: { producto:{
+            include: {
+              imagenes : true
+            }
+          } } },
           metodoPago: true,
           //   direccion: true,
         },
@@ -115,7 +97,11 @@ export class PrismaFacturaRepository implements IFacturaRepository {
         where: { id: id },
         include: {
           usuario: true,
-          detallesFactura: { include: { producto: true } },
+          detallesFactura: { include: { producto:{
+            include: {
+              imagenes : true
+            }
+          } } },
           metodoPago: true,
           direccion: true,
           //  direccion: true,

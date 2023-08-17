@@ -1,7 +1,7 @@
 export const encFactura = [
   {
     fechaCompra: new Date("2023/10/25"),
-    numTarjeta: "123456789",
+    numTarjeta: "7470",
     subTotal: 20000,
     total: 20000,
     metodoPagoId: 1,
@@ -10,7 +10,7 @@ export const encFactura = [
   },
   {
     fechaCompra: new Date("2023/10/25"),
-    numTarjeta: "123456789",
+    numTarjeta: "7470",
     subTotal: 20000,
     total: 20000,
     metodoPagoId: 1,

@@ -108,6 +108,11 @@ export class PrismaProductoRepository implements IProductoRepository {
           marcas: true,
           tamannos: true,
         },
+        where:{
+          stock:{
+            gt:0
+          }
+        }
       });
     } catch (error) {
       // Manejo de errores
