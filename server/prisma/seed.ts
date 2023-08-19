@@ -7,7 +7,7 @@ import { imagenProducto } from './seeds/imagenProducto.seed';
 import { detFactura } from './seeds/factura.seed';
 import { encFactura } from './seeds/factura.seed';
 import { estadoProducto } from './seeds/estadoProducto.seed';
-import { estadoPedido } from './seeds/estadoPedido.seed';
+import { estado } from './seeds/estado.seed';
 import { direccionUsuario } from './seeds/direccionUsuario.seed';
 import { comentariosProducto } from './seeds/comentariosProducto.seed';
 import { categoriaProducto } from './seeds/categoriaProducto.seed';
@@ -51,8 +51,8 @@ async function main() {
   await prisma.categoriaProducto.createMany({
     data: categoriaProducto,
   });
-  await prisma.estadoPedido.createMany({
-    data: estadoPedido,
+  await prisma.estado.createMany({
+    data: estado,
   });
   await prisma.estadoProducto.createMany({
     data: estadoProducto,

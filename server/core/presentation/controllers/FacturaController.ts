@@ -52,6 +52,7 @@ export class FacturaController {
             total: infoOrden.EncabezadoFactura.total,
             metodoPagoId: infoOrden.EncabezadoFactura.metodoPagoId || metodoPago?.id,
             IdDireccion: infoOrden.EncabezadoFactura.idDireccion || direccion?.id,
+            estadoId: 1,
           },
         });
   
@@ -60,13 +61,13 @@ export class FacturaController {
             cantidad: number;
             precioUnitario: number;
             productoId: number;
-            estadoPedidoId: number;
+            estadoId: number;
           }) => ({
             cantidad: detalle.cantidad,
             precioUnitario: detalle.precioUnitario,
             encabezadosFacturaId: encabezadoFactura.id,
             productoId: detalle.productoId,
-            estadoPedidoId: detalle.estadoPedidoId,
+            estadoId: detalle.estadoId,
           })),
         });
   

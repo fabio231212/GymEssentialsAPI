@@ -1,4 +1,4 @@
-export const estadoPedido = [
+export const estado= [
     {
       descripcion: "Pendiente",
     },

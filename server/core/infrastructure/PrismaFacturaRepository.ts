@@ -57,8 +57,13 @@ export class PrismaFacturaRepository implements IFacturaRepository {
           },
         },
         include: {
-          producto: true,
+          producto: {
+            include: {
+              imagenes: true,
+            },
+          },
           encabezadosFactura: true,
+          estadoPedido: true,
         },
       });
 

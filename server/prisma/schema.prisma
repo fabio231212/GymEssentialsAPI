@@ -55,7 +55,7 @@ model Producto {
   descuento           Decimal              @db.Decimal(10, 2)
   precio              Decimal              @db.Decimal(10, 2)
   precioOferta        Decimal              @db.Decimal(10, 2)
-  createdAt   DateTime            @default(now())
+  createdAt           DateTime             @default(now())
   usuarioId           Int
   usuario             Usuario              @relation(fields: [usuarioId], references: [id])
   imagenes            ImagenProducto[]
@@ -113,23 +113,26 @@ model EncabezadoFactura {
   detallesFactura DetalleFactura[]
   IdDireccion     Int
   direccion       DireccionUsuario @relation(fields: [IdDireccion], references: [id])
+  estadoId        Int
+  estadoPedido    Estado           @relation(fields: [estadoId], references: [id])
 }
 
-model EstadoPedido {
-  id              Int              @id @default(autoincrement())
-  descripcion     String
-  detallesFactura DetalleFactura[]
+model Estado {
+  id                Int                 @id @default(autoincrement())
+  descripcion       String
+  detallesFactura   DetalleFactura[]
+  EncabezadoFactura EncabezadoFactura[]
 }
 
 model MetodoPago {
-  id                  Int                 @id @default(autoincrement())
-  numTarjeta          String
-  mesVencimiento      String
-  anioVencimiento     Int
-  propietarioTarjeta  String
-  idUsuario           Int
-  usuario             Usuario             @relation(fields: [idUsuario], references: [id])
-  EncabezadoFactura   EncabezadoFactura[]
+  id                 Int                 @id @default(autoincrement())
+  numTarjeta         String
+  mesVencimiento     String
+  anioVencimiento    Int
+  propietarioTarjeta String
+  idUsuario          Int
+  usuario            Usuario             @relation(fields: [idUsuario], references: [id])
+  EncabezadoFactura  EncabezadoFactura[]
 }
 
 model DetalleFactura {
@@ -140,8 +143,8 @@ model DetalleFactura {
   encabezadosFactura   EncabezadoFactura @relation(fields: [encabezadosFacturaId], references: [id])
   productoId           Int
   producto             Producto          @relation(fields: [productoId], references: [id])
-  estadoPedidoId       Int
-  estadoPedido         EstadoPedido      @relation(fields: [estadoPedidoId], references: [id])
+  estadoId             Int
+  estadoPedido         Estado            @relation(fields: [estadoId], references: [id])
 }
 
 model CalificacionUsuario {

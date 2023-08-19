@@ -104,12 +104,13 @@ CREATE TABLE `EncabezadoFactura` (
     `metodoPagoId` INTEGER NOT NULL,
     `usuarioId` INTEGER NOT NULL,
     `IdDireccion` INTEGER NOT NULL,
+    `estadoId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `EstadoPedido` (
+CREATE TABLE `Estado` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `descripcion` VARCHAR(191) NOT NULL,
 
@@ -135,7 +136,7 @@ CREATE TABLE `DetalleFactura` (
     `precioUnitario` DECIMAL(10, 2) NOT NULL,
     `encabezadosFacturaId` INTEGER NOT NULL,
     `productoId` INTEGER NOT NULL,
-    `estadoPedidoId` INTEGER NOT NULL,
+    `estadoId` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -215,6 +216,9 @@ ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_usuarioId_fkey
 ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_IdDireccion_fkey` FOREIGN KEY (`IdDireccion`) REFERENCES `DireccionUsuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `EncabezadoFactura` ADD CONSTRAINT `EncabezadoFactura_estadoId_fkey` FOREIGN KEY (`estadoId`) REFERENCES `Estado`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `MetodoPago` ADD CONSTRAINT `MetodoPago_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -224,7 +228,7 @@ ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_encabezadosFacturaId
 ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_productoId_fkey` FOREIGN KEY (`productoId`) REFERENCES `Producto`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_estadoPedidoId_fkey` FOREIGN KEY (`estadoPedidoId`) REFERENCES `EstadoPedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `DetalleFactura` ADD CONSTRAINT `DetalleFactura_estadoId_fkey` FOREIGN KEY (`estadoId`) REFERENCES `Estado`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `CalificacionUsuario` ADD CONSTRAINT `CalificacionUsuario_usuarioId_fkey` FOREIGN KEY (`usuarioId`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
