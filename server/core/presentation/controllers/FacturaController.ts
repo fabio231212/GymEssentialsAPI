@@ -103,12 +103,6 @@ export class FacturaController {
     }
   };
   
-  
-  
-  
-  
-  
-  
 
   getFacturasByUsuario = async (req: Request, res: Response) => {
     let idUsuario = parseInt(req.params.idUsuario);
@@ -129,4 +123,11 @@ export class FacturaController {
     const facturas = await this.facturaUseCase.getFacturasById(id);
     res.json(facturas);
   };
+
+  actualizarEstadoPedido = async (req: Request, res: Response) => {
+    let id = parseInt(req.params.id);
+    let estado = parseInt(req.body.estado);
+    const facturas = await this.facturaUseCase.actualizarEstadoPedido(id, estado);
+    res.json(facturas);
+  }
 }

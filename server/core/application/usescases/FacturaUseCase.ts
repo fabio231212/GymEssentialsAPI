@@ -24,4 +24,8 @@ export class FacturaUseCase {
   getFacturasById = async (id: number): Promise<EncabezadoFactura> => {
     return this.facturaRepository.getFacturasById(id);
   };
+
+  actualizarEstadoPedido = async (id: number, estado: number) => {
+    return this.facturaRepository.actualizarEstadoPedido(id, estado);
+  }
 }

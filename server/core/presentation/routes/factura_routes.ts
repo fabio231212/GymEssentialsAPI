@@ -18,6 +18,7 @@ facturaRoute.get(
   facturaController.getProductosByVendedor
 );
 facturaRoute.post('/', verifyToken, facturaController.createFactura);
+facturaRoute.put('/actualizarEstado/:id', verifyToken, facturaController.actualizarEstadoPedido);
 // router.post('/', postUsuario);
 // router.put('/:id', putUsuario);
 // router.delete('/:id', deleteUsuario);
