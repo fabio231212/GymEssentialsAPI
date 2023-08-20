@@ -11,6 +11,63 @@ export class PrismaUserRepository implements IUserRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  getCantidadUsuarios(): Promise<number> {
+    try {
+      return this.prisma.usuario.count();
+    } catch (error) {
+      // Manejo de errores
+      console.error(error);
+      throw new Error("Error al obtener la cantidad de usuarios");
+    }
+  }
+  async getTop5Vendedores(): Promise<any[]> {
+
+    const topVendedores = await this.prisma.$queryRaw<any[]>`
+    SELECT
+        u.nombre AS name,
+        AVG(cu.calificacion) AS value
+      FROM
+        CalificacionUsuario cu
+        JOIN Usuario u ON cu.usuarioId = u.id
+      WHERE
+        cu.isVendedor = true
+      GROUP BY
+        cu.usuarioId, u.nombre
+      ORDER BY
+        value DESC
+      LIMIT 5;
+  `;
+
+    return topVendedores;
+  }
+
+  async getTop3Worst(): Promise<any[]> {
+
+    const topVendedores = await this.prisma.$queryRaw<any[]>`
+
+    SELECT
+      u.nombre AS name,
+      AVG(cu.calificacion) AS value
+    FROM
+      CalificacionUsuario cu
+      JOIN Usuario u ON cu.usuarioId = u.id
+    WHERE
+      cu.isVendedor = true
+    GROUP BY
+      u.nombre
+    ORDER BY
+      value ASC
+    LIMIT 3;
+  `;
+
+    return topVendedores;
+  }
+
+
+
+
+
+
   getUsuarios(): Promise<Usuario[]> {
     try {
       return this.prisma.usuario.findMany({

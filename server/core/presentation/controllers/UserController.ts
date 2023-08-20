@@ -10,7 +10,32 @@ export class UserController {
   constructor() {
     this.userCase = new UserUseCase();
   }
+  getCantidadUsuarios = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const cantidad = await this.userCase.getCantidadUsuarios();
+      return res.json(cantidad);
+    } catch (error) {
+      return res.json("No se pudo obtener la cantidad de usuarios");
+    }
+  }
 
+  getTop5Vendedores = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const topVendedores = await this.userCase.getTop5Vendedores();
+      return res.json(topVendedores);
+    } catch (error) {
+      return res.json("No se pudo obtener los vendedores");
+    }
+  }
+
+  getTop3Worst = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const topVendedores = await this.userCase.getTop3Worst();
+      return res.json(topVendedores);
+    } catch (error) {
+      return res.json("No se pudo obtener los vendedores");
+    }
+  }
   createUser = async (req: Request, res: Response): Promise<Response> => {
     try {
       const userdata = req.body;
