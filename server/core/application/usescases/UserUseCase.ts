@@ -37,4 +37,12 @@ export class UserUseCase {
   async updateHabilitado(id: number, habilitado: boolean): Promise<Usuario> {
     return this.userRepository.updateHabilitado(id, habilitado);
   }
+
+  async getCompradorConMasComprasXVendedor(idVendedor: number): Promise<any[]> {
+    return this.userRepository.getCompradorConMasComprasXVendedor(idVendedor);
+  }
+
+  async getEvaluacionesVendedor(idVendedor: any): Promise<any[]> {
+    return this.userRepository.getEvaluacionesVendedor(idVendedor);
+  }
 }

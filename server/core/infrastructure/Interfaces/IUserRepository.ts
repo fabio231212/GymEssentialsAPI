@@ -10,4 +10,6 @@ export interface IUserRepository {
   getTop5Vendedores(): Promise<any[]>;
   getTop3Worst(): Promise<any[]>;
   getCantidadUsuarios(): Promise<number>;
+  getCompradorConMasComprasXVendedor(idVendedor: number): Promise<any[]>;
+  getEvaluacionesVendedor(idVendedor: any): Promise<any[]>;
 }

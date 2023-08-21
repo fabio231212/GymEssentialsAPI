@@ -13,23 +13,19 @@ export class PrismaProductoRepository implements IProductoRepository {
   }
   getTopProductoByVendedor(id: number): Promise<any> {
     const topProduct = this.prisma.$queryRaw<any>`
-  SELECT
-    df.productoId,
-    p.nombre AS nombreProducto,
-    SUM(df.cantidad) AS totalCantidad
-  FROM
-    DetalleFactura df
-    JOIN EncabezadoFactura ef ON df.encabezadosFacturaId = ef.id
-    JOIN Producto p ON df.productoId = p.id
-  WHERE
-    ef.usuarioId = ${id} -- Id del vendedor
-  GROUP BY
-    df.productoId, p.nombre
-  ORDER BY
-    totalCantidad DESC
-  LIMIT 1;
+    SELECT
+    P.id AS productId,
+    P.nombre AS nombreProducto,
+    SUM(DF.cantidad) AS totalCantidad
+FROM Producto AS P
+JOIN DetalleFactura AS DF ON P.id = DF.productoId
+JOIN EncabezadoFactura AS EF ON DF.encabezadosFacturaId = EF.id
+WHERE P.usuarioId = ${id}
+GROUP BY P.id, P.nombre
+ORDER BY totalCantidad DESC
+LIMIT 1;
 `;
-    return topProduct;
+ return topProduct;
   }
 
   getNewProducts(): Promise<any> {

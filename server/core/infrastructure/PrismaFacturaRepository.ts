@@ -34,7 +34,6 @@ export class PrismaFacturaRepository implements IFacturaRepository {
       LIMIT 5;
     `;
 
-    console.log(topProducts);
 
     return topProducts;
   }

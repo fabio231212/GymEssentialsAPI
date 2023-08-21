@@ -11,6 +11,8 @@ userRoute.get('/', verifyToken, userController.getUsuarios);
 userRoute.get('/top5', userController.getTop5Vendedores);
 userRoute.get('/top3Worst', userController.getTop3Worst);
 userRoute.get('/cantidad', userController.getCantidadUsuarios);
+userRoute.get('/evaluacionesVendedor/:idVendedor', verifyToken, userController.getEvaluacionesVendedor);
+userRoute.get('/compradorConMasComprasXVendedor/:idVendedor', verifyToken, userController.getCompradorConMasComprasXVendedor);
 userRoute.post('/', ImageUploader.uploadFotoPerfil.single('fotoPerfil'), userController.createUser);
 userRoute.post('/login', userController.login);
 userRoute.put('/:id', verifyToken, userController.updateHabilitado);
