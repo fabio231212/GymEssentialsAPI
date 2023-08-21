@@ -39,6 +39,7 @@ export class FacturaController {
               mesVencimiento: infoOrden.MetodoPago.mesVencimiento,
               anioVencimiento: Number.parseInt(infoOrden.MetodoPago.anioVencimiento),
               idUsuario: infoOrden.EncabezadoFactura.usuarioId,
+              
             },
           });
         }
