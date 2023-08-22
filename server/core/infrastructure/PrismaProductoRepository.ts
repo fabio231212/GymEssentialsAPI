@@ -11,6 +11,22 @@ export class PrismaProductoRepository implements IProductoRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  getTopProductoByVendedor(id: number): Promise<any> {
+    const topProduct = this.prisma.$queryRaw<any>`
+    SELECT
+    P.id AS productId,
+    P.nombre AS nombreProducto,
+    SUM(DF.cantidad) AS totalCantidad
+FROM Producto AS P
+JOIN DetalleFactura AS DF ON P.id = DF.productoId
+JOIN EncabezadoFactura AS EF ON DF.encabezadosFacturaId = EF.id
+WHERE P.usuarioId = ${id}
+GROUP BY P.id, P.nombre
+ORDER BY totalCantidad DESC
+LIMIT 1;
+`;
+ return topProduct;
+  }
 
   getNewProducts(): Promise<any> {
     try {
@@ -20,14 +36,14 @@ export class PrismaProductoRepository implements IProductoRepository {
           imagenes: true,
           estadoProducto: { select: { descripcion: true } },
           marcas: true,
-          tamannos: true,         
+          tamannos: true,
         },
         orderBy: {
           createdAt: 'desc', // Ordenar por descuento en orden descendente
         },
         take: 7, // Obtener los primeros 7 productos
       });
-  
+
       return newProducts;
     } catch (error) {
       // Manejo de errores
@@ -43,7 +59,7 @@ export class PrismaProductoRepository implements IProductoRepository {
           imagenes: true,
           estadoProducto: { select: { descripcion: true } },
           marcas: true,
-          tamannos: true,         
+          tamannos: true,
         },
         orderBy: {
           descuento: 'desc', // Ordenar por descuento en orden descendente
@@ -55,7 +71,7 @@ export class PrismaProductoRepository implements IProductoRepository {
           }
         }
       });
-  
+
       return productsWithDiscount;
     } catch (error) {
       // Manejo de errores
@@ -68,32 +84,34 @@ export class PrismaProductoRepository implements IProductoRepository {
   //Obtiene los productos de un vendedor
   getProductoByIdVendedor(id: number): Promise<Producto[]> {
     try {
-      return this.prisma.producto.findMany({ where: { usuarioId: id }, include:{
-        imagenes: true,
-        estadoProducto: { select: { descripcion: true } },
-        marcas: true,
-        tamannos: true,
-        categoriaProducto: true,
-      } });
+      return this.prisma.producto.findMany({
+        where: { usuarioId: id }, include: {
+          imagenes: true,
+          estadoProducto: { select: { descripcion: true } },
+          marcas: true,
+          tamannos: true,
+          categoriaProducto: true,
+        }
+      });
     } catch (error) {
       console.error(error);
       throw new Error("Error al obtener los productos del vendedor");
     }
   }
-  
+
   async getProdructsByComentario(): Promise<any> {
     try {
       const productosConMasComentarios = await this.prisma.producto.findMany({
         take: 7
       });
-  
+
       return productosConMasComentarios;
     } catch (error) {
       throw error;
     }
   }
-  
-  
+
+
 
 
   //Obtiene todos los productos
@@ -108,9 +126,9 @@ export class PrismaProductoRepository implements IProductoRepository {
           marcas: true,
           tamannos: true,
         },
-        where:{
-          stock:{
-            gt:0
+        where: {
+          stock: {
+            gt: 0
           }
         }
       });
@@ -190,12 +208,12 @@ export class PrismaProductoRepository implements IProductoRepository {
           },
         },
       });
-      
+
 
       //DESDE AQUI SE CREA UNA CONSTANTE DE IMAGENES QUE CONTIENE UN ARREGLO DE IMAGENES CADA UNA CON UN NOMBRE UNICO
       const imagenes = producto.imagenes.map((imagen: any, index: number) => ({
         imgUrl:
-        process.env.URL_IMAGENES +
+          process.env.URL_IMAGENES +
           producto.nombre.replace(/\s/g, "") +
           producto.usuarioId +
           new Date().toISOString().slice(0, 10).replace(/-/g, "") +
@@ -235,7 +253,7 @@ export class PrismaProductoRepository implements IProductoRepository {
       });
 
       if (existingProduct) {
-        
+
 
         // Actualiza los datos del producto según lo que venga en updatedProductData
         const updatedProduct = await this.prisma.producto.update({
@@ -251,12 +269,12 @@ export class PrismaProductoRepository implements IProductoRepository {
             estadoProductoId: parseInt(producto.estadoProductoId),
             usuarioId: parseInt(producto.usuarioId),
             tamannos: {
-                disconnect: existingProduct.tamannos,
-                connect: JSON.parse(producto.tamannos),
+              disconnect: existingProduct.tamannos,
+              connect: JSON.parse(producto.tamannos),
             },
             marcas: {
-                disconnect: existingProduct.marcas,
-                connect: JSON.parse(producto.marcas),
+              disconnect: existingProduct.marcas,
+              connect: JSON.parse(producto.marcas),
             },
           },
         });
@@ -265,10 +283,10 @@ export class PrismaProductoRepository implements IProductoRepository {
         if (producto.imagenes && producto.imagenes.length > 0) {
           const newImages = producto.imagenes.map((image: any, index: number) => ({
             imgUrl:
-               process.env.URL_IMAGENES+
+              process.env.URL_IMAGENES +
               updatedProduct.nombre.replace(/\s/g, "") +
               updatedProduct.usuarioId +
-              new Date().toISOString().slice(0, 10).replace(/-/g, "")+ (index+1) +
+              new Date().toISOString().slice(0, 10).replace(/-/g, "") + (index + 1) +
               ".jpg",
             productoId: updatedProduct.id,
           }));

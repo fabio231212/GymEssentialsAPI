@@ -11,4 +11,5 @@ export interface IProductoRepository {
     getProdructsByComentario(): Promise<any>;
     getProductsWithHigherDiscount(): Promise<any>;
     getNewProducts(): Promise<any>;
+    getTopProductoByVendedor(id: number): Promise<any>;
 }

@@ -10,8 +10,20 @@ export class UserUseCase {
     this.userRepository = new PrismaUserRepository();
   }
 
+
+  async getCantidadUsuarios(): Promise<number> {
+    return this.userRepository.getCantidadUsuarios();
+  }
+
   async CrearUsuario(user: Usuario): Promise<Usuario> {
     return this.userRepository.createUser(user);
+  }
+
+  async getTop5Vendedores(): Promise<any[]> {
+    return this.userRepository.getTop5Vendedores();
+  }
+  async getTop3Worst(): Promise<any[]> {
+    return this.userRepository.getTop3Worst();
   }
 
   async login(email: string, password: string): Promise<any | null> {
@@ -24,5 +36,13 @@ export class UserUseCase {
 
   async updateHabilitado(id: number, habilitado: boolean): Promise<Usuario> {
     return this.userRepository.updateHabilitado(id, habilitado);
+  }
+
+  async getCompradorConMasComprasXVendedor(idVendedor: number): Promise<any[]> {
+    return this.userRepository.getCompradorConMasComprasXVendedor(idVendedor);
+  }
+
+  async getEvaluacionesVendedor(idVendedor: any): Promise<any[]> {
+    return this.userRepository.getEvaluacionesVendedor(idVendedor);
   }
 }

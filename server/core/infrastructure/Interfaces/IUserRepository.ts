@@ -7,4 +7,9 @@ export interface IUserRepository {
   login(email: string, password: string): Promise<any | null>;
   getUsuarios(): Promise<Usuario[]>;
   updateHabilitado(id: number, habilitado: boolean): Promise<Usuario>;
+  getTop5Vendedores(): Promise<any[]>;
+  getTop3Worst(): Promise<any[]>;
+  getCantidadUsuarios(): Promise<number>;
+  getCompradorConMasComprasXVendedor(idVendedor: number): Promise<any[]>;
+  getEvaluacionesVendedor(idVendedor: any): Promise<any[]>;
 }
