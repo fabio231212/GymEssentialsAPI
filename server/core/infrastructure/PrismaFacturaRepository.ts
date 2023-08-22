@@ -103,6 +103,8 @@ export class PrismaFacturaRepository implements IFacturaRepository {
           return detalle;
         }
       );
+    });
+  }
   async getTop5ProductosMasVendidos(): Promise<any[]> {
     const currentDate = new Date();
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
