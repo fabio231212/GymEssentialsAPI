@@ -4,18 +4,103 @@ import { PrismaClient, Rol, Usuario } from "@prisma/client"; // Importa el model
 import { IUserRepository } from "./Interfaces/IUserRepository";
 import { parse } from "path";
 
-
 export class PrismaUserRepository implements IUserRepository {
   private prisma: PrismaClient;
 
   constructor() {
     this.prisma = new PrismaClient();
   }
+  getEvaluacionesVendedor(idVendedor: any): Promise<any[]> {
+    return this.prisma.$queryRaw<any[]>`
+    SELECT
+      CONCAT('Calificacion ', C.calificacion) as name,
+      COALESCE(COUNT(CU.calificacion), 0) as value
+    FROM
+      (
+        SELECT DISTINCT calificacion
+        FROM CalificacionUsuario
+      ) AS C
+    LEFT JOIN
+      CalificacionUsuario CU
+    ON
+      C.calificacion = CU.calificacion
+      AND CU.isVendedor = true
+      AND CU.usuarioId = ${idVendedor}
+    GROUP BY
+      C.calificacion
+    ORDER BY
+      C.calificacion;
+  `;
+  
+  }
+  getCompradorConMasComprasXVendedor(idVendedor: number): Promise<any[]> {
+    return this.prisma.$queryRaw<any[]>`  SELECT
+    CONCAT(U.nombre, ' ', U.apellidos) AS name,
+    SUM(DF.cantidad) AS value
+FROM Usuario AS U
+JOIN EncabezadoFactura AS EF ON U.id = EF.usuarioId
+JOIN DetalleFactura AS DF ON EF.id = DF.encabezadosFacturaId
+JOIN Producto AS P ON DF.productoId = P.id
+WHERE P.usuarioId = ${idVendedor}
+GROUP BY name
+ORDER BY value DESC
+LIMIT 5;`;
+  }
+  getCantidadUsuarios(): Promise<number> {
+    try {
+      return this.prisma.usuario.count();
+    } catch (error) {
+      // Manejo de errores
+      console.error(error);
+      throw new Error("Error al obtener la cantidad de usuarios");
+    }
+  }
+  async getTop5Vendedores(): Promise<any[]> {
+    const topVendedores = await this.prisma.$queryRaw<any[]>`
+    SELECT
+        u.nombre AS name,
+        AVG(cu.calificacion) AS value
+      FROM
+        CalificacionUsuario cu
+        JOIN Usuario u ON cu.usuarioId = u.id
+      WHERE
+        cu.isVendedor = true
+      GROUP BY
+        cu.usuarioId, u.nombre
+      ORDER BY
+        value DESC
+      LIMIT 5;
+  `;
+
+    return topVendedores;
+  }
+
+  async getTop3Worst(): Promise<any[]> {
+    const topVendedores = await this.prisma.$queryRaw<any[]>`
+
+    SELECT
+      u.nombre AS name,
+      AVG(cu.calificacion) AS value
+    FROM
+      CalificacionUsuario cu
+      JOIN Usuario u ON cu.usuarioId = u.id
+    WHERE
+      cu.isVendedor = true
+    GROUP BY
+      u.nombre
+    ORDER BY
+      value ASC
+    LIMIT 3;
+  `;
+
+    return topVendedores;
+  }
+
   getUsuarios(): Promise<Usuario[]> {
     try {
       return this.prisma.usuario.findMany({
         include: {
-          roles: true
+          roles: true,
         },
       });
     } catch (error) {
@@ -26,7 +111,6 @@ export class PrismaUserRepository implements IUserRepository {
   }
   updateHabilitado(id: number, habilitado: boolean): Promise<Usuario> {
     try {
-
       return this.prisma.usuario.update({
         where: {
           id: id,
@@ -52,10 +136,15 @@ export class PrismaUserRepository implements IUserRepository {
           clave: user.clave,
           email: user.email,
           numCelular: user.numCelular,
-          fotoPerfil: process.env.URL_IMAGENES + user.nombre.replace(/\s/g, "") + user.apellidos.replace(/\s/g, "") + user.cedula.replace(/\s/g, "") + ".jpg",
+          fotoPerfil:
+            process.env.URL_IMAGENES +
+            user.nombre.replace(/\s/g, "") +
+            user.apellidos.replace(/\s/g, "") +
+            user.cedula.replace(/\s/g, "") +
+            ".jpg",
           roles: {
-            connect: JSON.parse(user.roles)
-          }
+            connect: JSON.parse(user.roles),
+          },
         },
       });
 
@@ -67,7 +156,7 @@ export class PrismaUserRepository implements IUserRepository {
             anioVencimiento: parseInt(user.anioVencimiento),
             mesVencimiento: user.mesVencimiento,
             idUsuario: nuevoUsuario.id,
-          }
+          },
         });
       }
 
@@ -80,7 +169,7 @@ export class PrismaUserRepository implements IUserRepository {
             sennas: user.otrasSennas,
             codPostal: user.zip,
             usuarioId: nuevoUsuario.id,
-          }
+          },
         });
       }
       return nuevoUsuario;

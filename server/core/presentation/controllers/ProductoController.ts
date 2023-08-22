@@ -64,5 +64,15 @@ export class ProductoController {
     res.json(productos);
   }
 
-  
+  getTopProductoByVendedor = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.idVendedor);
+      const productos = await this.productoUseCase.getTopProductoByVendedor(id);
+      res.json(productos);
+    } catch (error) {
+      res.status(400).json({ error: 'El id del vendedor debe ser numerico' });
+    }
+  }
+
+
 }

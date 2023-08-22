@@ -46,12 +46,10 @@ export const detFactura = [
   },
   {
     encabezadosFacturaId: 2,
-    productoId: 4,
+    productoId: 9,
     cantidad: 7,
     precioUnitario: 2000,
     estadoId: 1
-
-
   },
   {
     encabezadosFacturaId: 2,

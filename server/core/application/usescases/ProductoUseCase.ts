@@ -2,29 +2,29 @@ import { Producto } from "@prisma/client";
 import { IProductoRepository } from "../../infrastructure/Interfaces/IProductoRepository";
 import { PrismaProductoRepository } from "../../infrastructure/PrismaProductoRepository";
 
-export class ProductoUseCase{
+export class ProductoUseCase {
     private productoRepository: IProductoRepository;
 
-    constructor(){
+    constructor() {
         this.productoRepository = new PrismaProductoRepository();
     }
 
-    getProductos= async (): Promise<Producto[]> => {
+    getProductos = async (): Promise<Producto[]> => {
         return this.productoRepository.getProductos();
     }
-    getProductoByIdVendedor= async (idVendedor: number): Promise<Producto[]> => {
+    getProductoByIdVendedor = async (idVendedor: number): Promise<Producto[]> => {
         return this.productoRepository.getProductoByIdVendedor(idVendedor);
     }
-    getProductoById= async (id: number): Promise<Producto> => {
+    getProductoById = async (id: number): Promise<Producto> => {
         return this.productoRepository.getProductoById(id);
     }
-    getProductsByCategory= async (id: number): Promise<Producto[]> => {
+    getProductsByCategory = async (id: number): Promise<Producto[]> => {
         return this.productoRepository.getProductsByCategory(id);
     }
-    createProduct= async (producto: any): Promise<Producto> => {
+    createProduct = async (producto: any): Promise<Producto> => {
         return this.productoRepository.createProduct(producto);
     }
-    editProduct= async (producto: any): Promise<Producto> => {
+    editProduct = async (producto: any): Promise<Producto> => {
         return this.productoRepository.editProduct(producto);
     }
     getProductsByComentario(): Promise<any> {
@@ -35,5 +35,8 @@ export class ProductoUseCase{
     }
     getNewProducts(): Promise<any> {
         return this.productoRepository.getNewProducts();
+    }
+    getTopProductoByVendedor(id: number): Promise<any> {
+        return this.productoRepository.getTopProductoByVendedor(id);
     }
 }

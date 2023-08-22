@@ -10,7 +10,32 @@ export class UserController {
   constructor() {
     this.userCase = new UserUseCase();
   }
+  getCantidadUsuarios = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const cantidad = await this.userCase.getCantidadUsuarios();
+      return res.json(cantidad);
+    } catch (error) {
+      return res.json("No se pudo obtener la cantidad de usuarios");
+    }
+  }
 
+  getTop5Vendedores = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const topVendedores = await this.userCase.getTop5Vendedores();
+      return res.json(topVendedores);
+    } catch (error) {
+      return res.json("No se pudo obtener los vendedores");
+    }
+  }
+
+  getTop3Worst = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const topVendedores = await this.userCase.getTop3Worst();
+      return res.json(topVendedores);
+    } catch (error) {
+      return res.json("No se pudo obtener los vendedores");
+    }
+  }
   createUser = async (req: Request, res: Response): Promise<Response> => {
     try {
       const userdata = req.body;
@@ -94,4 +119,34 @@ export class UserController {
       return res.json("No se pudo actualizar el usuario");
     }
   };
+
+  getCompradorConMasComprasXVendedor = async ( req: Request, res: Response): Promise<Response> => {
+    try {
+      const { idVendedor } = req.params;
+      const comprador = await this.userCase.getCompradorConMasComprasXVendedor(
+        parseInt(idVendedor)
+      );
+      return res.json(comprador);
+    } catch (error) {
+      return res.json("No se pudo obtener el comprador con mas compras");
+    }
+  }
+
+  getEvaluacionesVendedor = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const { idVendedor } = req.params;
+      const respuesta = await this.userCase.getEvaluacionesVendedor(
+        parseInt(idVendedor)
+      );
+      const evaluaciones = respuesta?.map((row: { name: any; value: any; }) => ({
+        name: row.name,
+        value: Number(row.value),
+      }));
+
+      return res.json(evaluaciones);
+    } catch (error) {
+      console.log(error);
+      return res.json("No se pudo obtener las evaluaciones del vendedor");
+    }
+  }
 }

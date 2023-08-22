@@ -8,16 +8,26 @@ export class FacturaController {
     this.facturaUseCase = new FacturaUseCase();
   }
 
+
+  getNumVentasCurrentDay = async (req: Request, res: Response) => {
+    const cantidad = await this.facturaUseCase.getNumVentasCurrentDay();
+    res.json(cantidad);
+  }
+  getTop5ProductosMasVendidos = async (req: Request, res: Response) => {
+    const top5 = await this.facturaUseCase.getTop5ProductosMasVendidos();
+    res.json(top5);
+  }
+
   createFactura = async (req: Request, res: Response) => {
     const infoOrden = req.body;
-  
+
     try {
       const prisma = new PrismaClient();
-  
+
       const factura = await prisma.$transaction(async (tx) => {
         let direccion = null;
         let metodoPago = null;
-  
+
         if (infoOrden.EncabezadoFactura.idDireccion === null) {
           direccion = await tx.direccionUsuario.create({
             data: {
@@ -30,7 +40,7 @@ export class FacturaController {
             },
           });
         }
-  
+
         if (infoOrden.EncabezadoFactura.metodoPagoId === null) {
           metodoPago = await tx.metodoPago.create({
             data: {
@@ -43,7 +53,7 @@ export class FacturaController {
             },
           });
         }
-  
+
         const encabezadoFactura = await tx.encabezadoFactura.create({
           data: {
             fechaCompra: infoOrden.EncabezadoFactura.fechaCompra,
@@ -56,7 +66,7 @@ export class FacturaController {
             estadoId: 1,
           },
         });
-  
+
         const detallesFactura = await tx.detalleFactura.createMany({
           data: infoOrden.DetallesFactura.detalles.map((detalle: {
             cantidad: number;
@@ -71,21 +81,21 @@ export class FacturaController {
             estadoId: detalle.estadoId,
           })),
         });
-  
+
         const stockUpdates = infoOrden.DetallesFactura.detalles.map((detalle: any) => ({
           id: detalle.productoId,
           cantidad: detalle.cantidad,
         }));
-  
+
         await Promise.all(
           stockUpdates.map(async (update: any) => {
             const producto = await tx.producto.findUnique({
               where: { id: update.id },
             });
-  
+
             if (producto) {
               const nuevoStock = producto.stock - update.cantidad;
-  
+
               await tx.producto.update({
                 where: { id: update.id },
                 data: { stock: nuevoStock },
@@ -93,17 +103,16 @@ export class FacturaController {
             }
           })
         );
-  
+
         return encabezadoFactura;
       });
-  
+
       return res.json({ factura, message: 'Factura creada correctamente', success: true });
     } catch (e) {
       console.log(e);
       return res.status(500).json({ error: 'Error al crear factura' });
     }
   };
-  
 
   getFacturasByUsuario = async (req: Request, res: Response) => {
     let idUsuario = parseInt(req.params.idUsuario);
@@ -112,11 +121,15 @@ export class FacturaController {
   };
 
   getProductosByVendedor = async (req: Request, res: Response) => {
-    let idVendedor = parseInt(req.params.idVendedor);
+    try {
+      let idVendedor = parseInt(req.params.idVendedor);
     const facturas = await this.facturaUseCase.getProductosByIdVendedor(
       idVendedor
     );
     res.json(facturas);
+    }catch(e){
+      res.status(500).json({ error: 'Error al obtener productos' });
+    }
   };
 
   getFacturasById = async (req: Request, res: Response) => {
