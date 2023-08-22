@@ -40,6 +40,7 @@ class Server {
     this.app.use(this.router.comentario.path, this.router.comentario.router);
     this.app.use(this.router.metodoPago.path, this.router.metodoPago.router);
     this.app.use(this.router.direccion.path, this.router.direccion.router);
+    this.app.use(this.router.evalUsuario.path, this.router.evalUsuario.router);
   }
 
   // Connect to database

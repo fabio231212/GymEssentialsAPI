@@ -3,7 +3,7 @@ export const estado= [
       descripcion: "Pendiente",
     },
     {
-      descripcion: "Enviado",
+      descripcion: "En Proceso",
     },
     {
       descripcion: "Entregado",

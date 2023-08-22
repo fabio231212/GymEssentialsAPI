@@ -11,6 +11,7 @@ import estadoPoductoRoute from "./estadoProducto_routes";
 import comentarioRoute from "./comentarioProd_routes";
 import metodoPagoRoute from "./metodoPago_routes";
 import direccionRouter from "./direccion_routes";
+import evUsuarioRoute from "./evUsuario_routes";
 export const route = () => {
 
     const apiPaths = {
@@ -57,6 +58,10 @@ export const route = () => {
         direccion: {
             'path': '/api/direccion',
             'router': direccionRouter
+        },
+        evalUsuario: {
+            'path': '/api/evaluacionUsuario',
+            'router': evUsuarioRoute
         }
     }
 

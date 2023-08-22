@@ -1,4 +1,9 @@
-import { DetalleFactura, EncabezadoFactura, PrismaClient, Producto } from "@prisma/client";
+import {
+  DetalleFactura,
+  EncabezadoFactura,
+  PrismaClient,
+  Producto,
+} from "@prisma/client";
 import { IFacturaRepository } from "./Interfaces/IFacturaRepository";
 import { usuario } from "../../prisma/seeds/usuario.seed";
 import { imagenProducto } from "../../prisma/seeds/imagenProducto.seed";
@@ -13,6 +18,91 @@ export class PrismaFacturaRepository implements IFacturaRepository {
     this.prisma = new PrismaClient();
   }
 
+  async actualizarEstadoPedido(id: number, estado: number): Promise<any> {
+    try {
+      // Actualiza el estado del detalleFactura
+      const detalleFacturaActualizado = await this.prisma.detalleFactura.update(
+        {
+          where: { id: id },
+          data: { estadoId: estado },
+        }
+      );
+
+      // Obtén el encabezadoFactura
+      const encabezadoFactura = await this.prisma.encabezadoFactura.findUnique({
+        where: { id: detalleFacturaActualizado.encabezadosFacturaId },
+        include: {
+          detallesFactura: true,
+        },
+      });
+
+      // Verifica si todos los detalles están entregados
+      const todosLosDetallesEntregados =
+        encabezadoFactura?.detallesFactura.every(
+          (detalleFactura: { estadoId: number }) =>
+            detalleFactura.estadoId === 3
+        );
+
+      // Verifica si al menos un detalle está entregado
+      const hayUnDetalleEntregado = encabezadoFactura?.detallesFactura.some(
+        (detalleFactura) => detalleFactura.estadoId === 3
+      );
+
+      // Verifica si el estado del encabezadoFactura ya está en progreso
+      const encabezadoFacturaEnProgreso = encabezadoFactura?.estadoId === 2;
+
+      // Actualiza el estado del encabezadoFactura si todos los detalles están entregados
+      if (todosLosDetallesEntregados) {
+        await this.prisma.encabezadoFactura.update({
+          where: { id: encabezadoFactura?.id },
+          data: { estadoId: 3 },
+        });
+      } else if (hayUnDetalleEntregado && !encabezadoFacturaEnProgreso) {
+        // Actualiza el estado del encabezadoFactura a En Progreso
+        await this.prisma.encabezadoFactura.update({
+          where: { id: encabezadoFactura?.id },
+          data: { estadoId: 2 },
+        });
+      }
+
+      return detalleFacturaActualizado;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al actualizar el estado del pedido");
+    }
+  }
+
+  createFactura(data: any): Promise<any> {
+    return this.prisma.$transaction(async (tx) => {
+      // Crear método de pago
+      if (data.metodoPago != null) {
+        const metodoPago = await tx.metodoPago.create({
+          data: data.encabezadoFactura.metodoPago,
+        });
+
+        if (data.direccion != null) {
+          // Crear dirección
+          const direccion = await tx.direccionUsuario.create({
+            data: data.encabezadoFactura.direccion,
+          });
+
+          // Asociar dirección y método de pago al encabezado de factura
+          data.encabezadoFactura.metodoPagoId = metodoPago.id;
+          data.encabezadoFactura.IdDireccion = direccion.id;
+        }
+      }
+      // Crear encabezado de factura
+      const encabezadoFactura = await tx.encabezadoFactura.create({
+        data: data.encabezadoFactura,
+      });
+
+      // Asociar encabezado de factura a los detalles de factura
+      const detallesFactura = data.encabezadoFactura.detallesFactura.map(
+        (detalle: { encabezadosFacturaId: number }) => {
+          detalle.encabezadosFacturaId = encabezadoFactura.id;
+          return detalle;
+        }
+      );
   async getTop5ProductosMasVendidos(): Promise<any[]> {
     const currentDate = new Date();
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -74,11 +164,14 @@ export class PrismaFacturaRepository implements IFacturaRepository {
               imagenes: true,
             },
           },
-          encabezadosFactura: true,
+          encabezadosFactura: {
+            include: {
+              usuario: true,
+            },
+          },
           estadoPedido: true,
         },
       });
-
     } catch (error) {
       console.error(error);
       throw new Error("Error al obtener los productos del vendedor");
@@ -97,12 +190,14 @@ export class PrismaFacturaRepository implements IFacturaRepository {
             include: {
               producto: {
                 include: {
-                  imagenes: true
-                }
-              }
-            }
+                  imagenes: true,
+                },
+              },
+            },
+
           },
           metodoPago: true,
+          estadoPedido: true,
           //   direccion: true,
         },
       });
@@ -122,10 +217,11 @@ export class PrismaFacturaRepository implements IFacturaRepository {
             include: {
               producto: {
                 include: {
-                  imagenes: true
-                }
-              }
-            }
+                  imagenes: true,
+                },
+              },
+            },
+
           },
           metodoPago: true,
           direccion: true,

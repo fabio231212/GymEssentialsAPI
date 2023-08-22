@@ -12,6 +12,7 @@ facturaRoute.get('/top5ProductosMasVendidos', facturaController.getTop5Productos
 facturaRoute.get('/idUsuario/:idUsuario', verifyToken, facturaController.getFacturasByUsuario);
 facturaRoute.get('/idVendedor/:idVendedor', verifyToken, facturaController.getProductosByVendedor);
 facturaRoute.post('/', verifyToken, facturaController.createFactura);
+facturaRoute.put('/actualizarEstado/:id', verifyToken, facturaController.actualizarEstadoPedido);
 // router.post('/', postUsuario);
 // router.put('/:id', putUsuario);
 // router.delete('/:id', deleteUsuario);

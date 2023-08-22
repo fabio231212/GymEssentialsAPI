@@ -49,6 +49,7 @@ export class FacturaController {
               mesVencimiento: infoOrden.MetodoPago.mesVencimiento,
               anioVencimiento: Number.parseInt(infoOrden.MetodoPago.anioVencimiento),
               idUsuario: infoOrden.EncabezadoFactura.usuarioId,
+              
             },
           });
         }
@@ -113,13 +114,6 @@ export class FacturaController {
     }
   };
 
-
-
-
-
-
-
-
   getFacturasByUsuario = async (req: Request, res: Response) => {
     let idUsuario = parseInt(req.params.idUsuario);
     const facturas = await this.facturaUseCase.getFacturasByUsuario(idUsuario);
@@ -143,4 +137,11 @@ export class FacturaController {
     const facturas = await this.facturaUseCase.getFacturasById(id);
     res.json(facturas);
   };
+
+  actualizarEstadoPedido = async (req: Request, res: Response) => {
+    let id = parseInt(req.params.id);
+    let estado = parseInt(req.body.estado);
+    const facturas = await this.facturaUseCase.actualizarEstadoPedido(id, estado);
+    res.json(facturas);
+  }
 }

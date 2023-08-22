@@ -5,6 +5,9 @@ export interface IFacturaRepository {
   getProductosByVendedor(idVendedor: number): Promise<DetalleFactura[]>;
   getFacturasById(id: number): Promise<EncabezadoFactura>;
 
+  actualizarEstadoPedido(id: number, estado: number): Promise<any>;
+
+
   getNumVentasCurrentDay(): Promise<number>;
 
   getTop5ProductosMasVendidos(): Promise<any[]>;
