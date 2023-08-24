@@ -11,8 +11,12 @@ export class UserUseCase {
   }
 
 
-  async getCantidadUsuarios(): Promise<number> {
-    return this.userRepository.getCantidadUsuarios();
+
+  async getCantidadVendedores(): Promise<number> {
+    return this.userRepository.getCantidadVendedores();
+  }
+  async getCantidadCompradores(): Promise<number> {
+    return this.userRepository.getCountCompradores();
   }
 
   async CrearUsuario(user: Usuario): Promise<Usuario> {

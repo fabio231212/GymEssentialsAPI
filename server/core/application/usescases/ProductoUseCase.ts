@@ -48,4 +48,7 @@ export class ProductoUseCase {
     getPrrudctsConDescuentoByVendedor(id: number): Promise<any> {
         return this.productoRepository.getPrrudctsConDescuentoByVendedor(id);
     }
+    getProdCountByCategory(): Promise<any> {
+        return this.productoRepository.getProdCountByCategory();
+    }
 }
