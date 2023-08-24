@@ -74,5 +74,35 @@ export class ProductoController {
     }
   }
 
+  getTopCategoriesByVendedor = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.idVendedor);
+      const productos = await this.productoUseCase.getTopCategoriesByVendedor(id);
+      res.json(productos);
+    } catch (error) {
+      res.status(400).json({ error: 'El id del vendedor debe ser numerico' });
+    }
+  }
 
+  getProductsSinStockByVendedor = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.idVendedor);
+      const productos = await this.productoUseCase.getProductsSinStockByVendedor(id);
+      res.json(Number((productos[0].value)));
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: 'El id del vendedor debe ser numerico' });
+    }
+  }
+
+
+  getPrrudctsConDescuentoByVendedor = async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.idVendedor);
+      const productos = await this.productoUseCase.getPrrudctsConDescuentoByVendedor(id);
+      res.json(Number((productos[0].value)));
+    } catch (error) {
+      res.status(400).json({ error: 'El id del vendedor debe ser numerico' });
+    }
+  }
 }

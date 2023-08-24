@@ -12,4 +12,7 @@ export interface IProductoRepository {
     getProductsWithHigherDiscount(): Promise<any>;
     getNewProducts(): Promise<any>;
     getTopProductoByVendedor(id: number): Promise<any>;
+    getTopCategoriesByVendedor(id: number): Promise<any>;
+    getProductsSinStockByVendedor(id: number): Promise<any>;
+    getPrrudctsConDescuentoByVendedor(id: number): Promise<any>;
 }

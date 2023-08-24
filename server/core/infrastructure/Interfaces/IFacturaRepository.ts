@@ -12,4 +12,6 @@ export interface IFacturaRepository {
 
   getTop5ProductosMasVendidos(): Promise<any[]>;
 
+  getVentasPorMesByVendedor(idVendedor: number): Promise<any[]>;
+
 }

@@ -39,4 +39,13 @@ export class ProductoUseCase {
     getTopProductoByVendedor(id: number): Promise<any> {
         return this.productoRepository.getTopProductoByVendedor(id);
     }
+    getTopCategoriesByVendedor(id: number): Promise<any> {
+        return this.productoRepository.getTopCategoriesByVendedor(id);
+    }
+    getProductsSinStockByVendedor(id: number): Promise<any> {
+        return this.productoRepository.getProductsSinStockByVendedor(id);
+    }
+    getPrrudctsConDescuentoByVendedor(id: number): Promise<any> {
+        return this.productoRepository.getPrrudctsConDescuentoByVendedor(id);
+    }
 }

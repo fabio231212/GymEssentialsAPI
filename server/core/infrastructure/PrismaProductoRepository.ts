@@ -11,6 +11,48 @@ export class PrismaProductoRepository implements IProductoRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  getPrrudctsConDescuentoByVendedor(id: number): Promise<any> {
+    const productosConDescuento = this.prisma.$queryRaw<any>`SELECT
+    COALESCE(COUNT(*), 0) AS value
+  FROM
+      Producto AS p
+  WHERE
+      p.usuarioId = ${id} -- Reemplaza [ID_DEL_VENDEDOR] con el ID del vendedor
+      AND p.descuento > 0;`
+      return productosConDescuento;
+      console.log(productosConDescuento);
+  }
+
+  getProductsSinStockByVendedor(id: number): Promise<any> {
+    const productosSinStock = this.prisma.$queryRaw<any>`SELECT
+    COALESCE(COUNT(*), 0) AS value
+  FROM
+      Producto AS p
+  WHERE
+      p.usuarioId = ${id} -- Reemplaza [ID_DEL_VENDEDOR] con el ID del vendedor
+      AND p.stock = 0;`
+      return productosSinStock;
+  }
+  getTopCategoriesByVendedor(id: number): Promise<any> {
+    const topCategories = this.prisma.$queryRaw<any>`
+    SELECT
+        cp.descripcion AS name,
+        SUM(df.cantidad) AS value
+    FROM
+        Producto AS p
+    JOIN
+        DetalleFactura AS df ON p.id = df.productoId
+    JOIN
+        CategoriaProducto AS cp ON p.categoriaProductoId = cp.id
+    WHERE
+        P.usuarioId = ${id}
+    GROUP BY
+        cp.descripcion
+    ORDER BY
+    value DESC;`
+
+        return topCategories;
+  }
   getTopProductoByVendedor(id: number): Promise<any> {
     const topProduct = this.prisma.$queryRaw<any>`
     SELECT

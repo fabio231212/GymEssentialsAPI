@@ -15,7 +15,10 @@ productoRoute.get('/', productoController.getProductos);
 productoRoute.get('/calificacion', productoController.getProductsByComentario);
 productoRoute.get('/nuevo', productoController.getNewProducts);
 productoRoute.get('/descuento', productoController.getProductsWithHigherDiscount);
+productoRoute.get('/conDescuento/:idVendedor', verifyToken, productoController.getPrrudctsConDescuentoByVendedor);
+productoRoute.get('/sinStock/:idVendedor', verifyToken, productoController.getProductsSinStockByVendedor);
 productoRoute.get('/topProductVendedor/:idVendedor', verifyToken, productoController.getTopProductoByVendedor)
+productoRoute.get('/topCategoriesVendedor/:idVendedor', productoController.getTopCategoriesByVendedor)
 productoRoute.get('/:id', productoController.getProductoById);
 productoRoute.get('/idVendedor/:idVendedor', verifyToken, productoController.getProductosByIdVendedor
 );
