@@ -33,4 +33,10 @@ export class FacturaUseCase {
   actualizarEstadoPedido = async (id: number, estado: number) => {
     return this.facturaRepository.actualizarEstadoPedido(id, estado);
   }
+
+  getVentasPorMesByVendedor = async (idVendedor: number): Promise<any[]> => {
+    return this.facturaRepository.getVentasPorMesByVendedor(idVendedor);
+  }
+
+  
 }

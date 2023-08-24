@@ -8,6 +8,16 @@ export class FacturaController {
     this.facturaUseCase = new FacturaUseCase();
   }
 
+  getVentasPorMesByVendedor = async (req: Request, res: Response) => {
+    try {
+      
+    let idVendedor = parseInt(req.params.idVendedor);
+    const ventas = await this.facturaUseCase.getVentasPorMesByVendedor(idVendedor);
+    res.json(ventas);
+  } catch (error) {
+      console.log(error);
+  }
+  }
 
   getNumVentasCurrentDay = async (req: Request, res: Response) => {
     const cantidad = await this.facturaUseCase.getNumVentasCurrentDay();

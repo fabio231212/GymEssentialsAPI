@@ -17,6 +17,28 @@ export class PrismaFacturaRepository implements IFacturaRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  getVentasPorMesByVendedor(idVendedor: number): Promise<any[]> {
+    return this.prisma.$queryRaw<any[]>`
+    SELECT
+    MONTHNAME(ef.fechaCompra) AS name,
+    SUM(df.cantidad * df.precioUnitario) AS value
+FROM
+    DetalleFactura AS df
+JOIN
+    Producto AS p ON df.productoId = p.id
+JOIN
+    EncabezadoFactura AS ef ON df.encabezadosFacturaId = ef.id
+WHERE
+    p.usuarioId = ${idVendedor}
+    AND YEAR(ef.fechaCompra) = YEAR(CURRENT_DATE())
+GROUP BY
+     name
+ORDER BY
+MONTH(ef.fechaCompra);;
+
+  `;
+  }
+
 
   async actualizarEstadoPedido(id: number, estado: number): Promise<any> {
     try {
@@ -173,6 +195,7 @@ export class PrismaFacturaRepository implements IFacturaRepository {
           },
           estadoPedido: true,
         },
+        take: 5
       });
     } catch (error) {
       console.error(error);
