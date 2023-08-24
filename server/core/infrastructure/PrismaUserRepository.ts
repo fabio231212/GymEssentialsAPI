@@ -10,6 +10,26 @@ export class PrismaUserRepository implements IUserRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+
+
+  getCountCompradores(): Promise<number> {
+    try {
+      return this.prisma.usuario.count({
+        where: {
+          roles: {
+            some: {
+              descripcion: 'comprador'
+            }
+          }
+        }
+      });
+    } catch (error) {
+      // Manejo de errores
+      console.error(error);
+      throw new Error("Error al obtener la cantidad de usuarios compradores");
+    }
+  }
+
   getEvaluacionesVendedor(idVendedor: any): Promise<any[]> {
     return this.prisma.$queryRaw<any[]>`
     SELECT
@@ -31,7 +51,7 @@ export class PrismaUserRepository implements IUserRepository {
     ORDER BY
       C.calificacion;
   `;
-  
+
   }
   getCompradorConMasComprasXVendedor(idVendedor: number): Promise<any[]> {
     return this.prisma.$queryRaw<any[]>`  SELECT
@@ -46,9 +66,17 @@ GROUP BY name
 ORDER BY value DESC
 LIMIT 5;`;
   }
-  getCantidadUsuarios(): Promise<number> {
+  getCantidadVendedores(): Promise<number> {
     try {
-      return this.prisma.usuario.count();
+      return this.prisma.usuario.count({
+        where: {
+          roles: {
+            some: {
+              descripcion: 'vendedor'
+            }
+          }
+        }
+      });
     } catch (error) {
       // Manejo de errores
       console.error(error);

@@ -10,14 +10,22 @@ export class UserController {
   constructor() {
     this.userCase = new UserUseCase();
   }
-  getCantidadUsuarios = async (req: Request, res: Response): Promise<Response> => {
+  getCountCompradores = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const cantidad = await this.userCase.getCantidadUsuarios();
-      return res.json(cantidad);
+      const count = await this.userCase.getCantidadCompradores();
+      return res.json(count);
     } catch (error) {
-      return res.json("No se pudo obtener la cantidad de usuarios");
+      return res.json("No se pudo obtener la cantidad de compradores");
     }
-  }
+  };
+  getCountVendedores = async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const count = await this.userCase.getCantidadVendedores();
+      return res.json(count);
+    } catch (error) {
+      return res.json("No se pudo obtener la cantidad de vendedores");
+    }
+  };
 
   getTop5Vendedores = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -120,7 +128,7 @@ export class UserController {
     }
   };
 
-  getCompradorConMasComprasXVendedor = async ( req: Request, res: Response): Promise<Response> => {
+  getCompradorConMasComprasXVendedor = async (req: Request, res: Response): Promise<Response> => {
     try {
       const { idVendedor } = req.params;
       const comprador = await this.userCase.getCompradorConMasComprasXVendedor(

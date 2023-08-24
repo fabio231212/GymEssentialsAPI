@@ -9,6 +9,11 @@ export class ProductoController {
     this.productoUseCase = new ProductoUseCase();
   }
 
+
+  getProdCountByCategory = async (req: Request, res: Response) => {
+    const productos = await this.productoUseCase.getProdCountByCategory();
+    res.json(productos);
+  }
   getProductos = async (req: Request, res: Response) => {
     const productos = await this.productoUseCase.getProductos();
     res.json(productos);
